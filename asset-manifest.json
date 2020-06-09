@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/lmiller36.github.io/ReactApp/static/css/main.5f361e03.chunk.css",
+    "main.js": "/lmiller36.github.io/ReactApp/static/js/main.864c5c9a.chunk.js",
+    "main.js.map": "/lmiller36.github.io/ReactApp/static/js/main.864c5c9a.chunk.js.map",
+    "runtime-main.js": "/lmiller36.github.io/ReactApp/static/js/runtime-main.e7059327.js",
+    "runtime-main.js.map": "/lmiller36.github.io/ReactApp/static/js/runtime-main.e7059327.js.map",
+    "static/js/2.df5d811d.chunk.js": "/lmiller36.github.io/ReactApp/static/js/2.df5d811d.chunk.js",
+    "static/js/2.df5d811d.chunk.js.map": "/lmiller36.github.io/ReactApp/static/js/2.df5d811d.chunk.js.map",
+    "index.html": "/lmiller36.github.io/ReactApp/index.html",
+    "precache-manifest.1ee4ac18095929a3b5cd09f6853c9687.js": "/lmiller36.github.io/ReactApp/precache-manifest.1ee4ac18095929a3b5cd09f6853c9687.js",
+    "service-worker.js": "/lmiller36.github.io/ReactApp/service-worker.js",
+    "static/css/main.5f361e03.chunk.css.map": "/lmiller36.github.io/ReactApp/static/css/main.5f361e03.chunk.css.map",
+    "static/js/2.df5d811d.chunk.js.LICENSE.txt": "/lmiller36.github.io/ReactApp/static/js/2.df5d811d.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/lmiller36.github.io/ReactApp/static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e7059327.js",
+    "static/js/2.df5d811d.chunk.js",
+    "static/css/main.5f361e03.chunk.css",
+    "static/js/main.864c5c9a.chunk.js"
+  ]
+}
