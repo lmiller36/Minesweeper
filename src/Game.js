@@ -67,7 +67,7 @@ const Game = ({
     };
 
     const bombClick = () => {
-        console.log('LOSS!');
+        alert('LOSS!');
     };
 
     const unopenedTileClick = (tile) => {

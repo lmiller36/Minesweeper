@@ -39,7 +39,6 @@ export const getInGame = (state) => {
 }
 
 export const getInMainMenu = (state) => {
-    // console.log(state.data.inMainMenu)
     return state.data.inMainMenu;
 }
 

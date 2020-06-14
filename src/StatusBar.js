@@ -10,6 +10,9 @@ import {
     getGameMode,
 
 } from './selectors';
+import {
+    mainMenu
+} from './actions'
 import Timer from './Timer';
 import { EASY, MEDIUM, HARD } from './Constants';
 
@@ -25,30 +28,29 @@ const StatusBarWrapper = styled.div`
     justify-content: space-around;
 `;
 
-const StatusBar = (
-    props,
-) => {
+const StatusBar = ({
+    game, gameMode, toggleGameMode, localRemoveCachedBoard, setGameDifficulty, mainMenu
+}) => {
 
     return <StatusBarWrapper>
-        <FontAwesomeIcon size='2x' icon={faHome} onClick={() => { }} />
+        <FontAwesomeIcon size='2x' icon={faHome} onClick={() => { mainMenu() }} />
         <Timer />
-        <RemainingBombs>{props.game.remaining}</RemainingBombs>
+        <RemainingBombs>{game.remaining}</RemainingBombs>
 
         <ModeWrapper >
             <FontAwesomeIcon
                 size='2x'
-                icon={props.gameMode === 'flagging' ? faFlag : faMousePointer}
+                icon={gameMode === 'flagging' ? faFlag : faMousePointer}
                 onClick={
                     () => {
-                        props.toggleGameMode();
+                        toggleGameMode();
                     }
                 }
             />
         </ModeWrapper>
 
         <FontAwesomeIcon size='2x' icon={faRedo} onClick={() => {
-            console.log(props);
-            props.localRemoveCachedBoard();
+            localRemoveCachedBoard();
 
             const gameDifficultySelector = document.querySelectorAll('input[name=\'gameDifficulty\']');
             let selectedValue;
@@ -67,7 +69,7 @@ const StatusBar = (
                 gameDifficulty = HARD;
             }
 
-            props.setGameDifficulty(gameDifficulty);
+            setGameDifficulty(gameDifficulty);
 
         }} />
 
@@ -82,4 +84,9 @@ const mapStateToProps = (state) => ({
     gameMode: getGameMode(state),
 });
 
-export default connect(mapStateToProps)(StatusBar);
+const mapDispatchToProps = (dispatch) => ({
+    mainMenu: () => dispatch(mainMenu()),
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(StatusBar);

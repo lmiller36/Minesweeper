@@ -1,4 +1,4 @@
-I have created a Minesweeper implementation built entirely in React. A live version can be found [here](https://lmiller36.github.io/ReactApp) 
+I have created a Minesweeper implementation built entirely in React. A live version can be found [here](https://lmiller36.github.io/Minesweeper) 
 
 ## Available Scripts
 

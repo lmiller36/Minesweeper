@@ -7,12 +7,9 @@ import {
     getGameInSetupMode,
 } from './selectors';
 
-import {capitalize} from './utils'
+import { capitalize } from './utils'
 
 const NewGameMenu = ({ localRemoveCachedBoard, setGameDifficulty, inSetupMode }) => {
-
-    console.log(inSetupMode)
-    console.log(inSetupMode ? "inline-grid" : "none");
 
     const NewGameMenuContainer = styled.div`
         display: ${inSetupMode ? "inline-grid" : "none"};
@@ -32,9 +29,10 @@ const NewGameMenu = ({ localRemoveCachedBoard, setGameDifficulty, inSetupMode })
 
         let gameDifficulty = EASY;
 
-        if (selectedValue === 'medium') {
+        //TODO
+        if (selectedValue === "MEDIUM") {
             gameDifficulty = MEDIUM;
-        } else if (selectedValue === 'hard') {
+        } else if (selectedValue === 'HARD') {
             gameDifficulty = HARD;
         }
 
@@ -47,8 +45,8 @@ const NewGameMenu = ({ localRemoveCachedBoard, setGameDifficulty, inSetupMode })
                 const difficulty = DIFFICULTIES[key];
                 const msg = `${capitalize(key)} (${difficulty.rows} x ${difficulty.cols}, ${difficulty.numBombs} mines)`
                 return <div>
-                    <input type='radio' id={{ key }} name='gameDifficulty' value={{ key }} />
-                    <label htmlFor={{ key }}>{msg}</label>
+                    <input type='radio' id={key} name='gameDifficulty' value={key} />
+                    <label htmlFor={key}>{msg}</label>
                 </div>
             })
         }

@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import {
     INITIALIZE_BOARD,
     REMOVE_CACHED_BOARD,
@@ -11,7 +10,7 @@ import {
     PAGE_LOADED_SETUP,
     CONTINUE_GAME,
 } from './actions';
-import { EASY } from './Constants';
+import { EASY, MAIN_MENU } from './Constants';
 
 
 
@@ -120,6 +119,16 @@ export const data = (state = initialState, action) => {
                 inGame: false,
             }
         }
+
+        case MAIN_MENU: {
+            return {
+                ...state,
+                inSetupMode: false,
+                inMainMenu: true,
+                inGame: false,
+            }
+        }
+
         case CONTINUE_GAME: {
             return {
                 ...state,

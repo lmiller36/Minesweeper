@@ -60,5 +60,11 @@ export const continueGame = () => ({
     payload: {},
 });
 
+export const MAIN_MENU = 'MAIN_MENU';
+export const mainMenu = () => ({
+    type: MAIN_MENU,
+    payload: {},
+});
+
 
 
