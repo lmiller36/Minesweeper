@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
     getStartTime,
     getCurrentTime,
-} from './selectors';
+} from '../../selectors';
 
 const TimerWrapper = styled.div``;
 

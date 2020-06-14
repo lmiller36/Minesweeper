@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable complexity */
+
 import React from 'react';
-import Tile from './Minesweeper/Tile';
+import Tile from '../../Minesweeper/Tile';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import {
@@ -12,11 +12,10 @@ import {
     getGameMode,
     getGameDifficulty,
 
-} from './selectors';
-import { initializeBoard, updateBoard, removeCachedBoard, initializeTimer, updateTimer, toggleGameMode, setGameDifficulty } from './actions';
+} from '../../selectors';
+import { initializeBoard, updateBoard, removeCachedBoard, initializeTimer, updateTimer, toggleGameMode, setGameDifficulty } from '../../actions';
 
-import MinesweeperGame from './Minesweeper/Minesweeper';
-import './Game.css';
+import MinesweeperGame from '../..//Minesweeper/Minesweeper';
 
 let stop = false;
 let emptyBoard = null;

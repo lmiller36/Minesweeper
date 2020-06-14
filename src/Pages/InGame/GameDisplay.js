@@ -1,22 +1,18 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable complexity */
 import React from 'react';
 import { connect } from 'react-redux';
-import { removeCachedBoard, toggleGameMode, setGameDifficulty } from './actions';
-import './Game.css';
-import StatusBar from './StatusBar';
+import { removeCachedBoard, toggleGameMode, setGameDifficulty } from '../../actions';
+import InGameMenu from './InGameMenu';
 
 
 import Game from './Game';
-import { getInGame } from './selectors';
+import { getInGame } from '../../selectors';
 
 const GameDisplay = ({
     localRemoveCachedBoard, setDifficulty, toggleGameMode, inGame
 }) => {
 
-    // localRemoveCachedBoard();
     return <div style={{ display: inGame ? "": "none"}} >
-        <StatusBar toggleGameMode={toggleGameMode} localRemoveCachedBoard={localRemoveCachedBoard} setGameDifficulty={setDifficulty} />
+        <InGameMenu toggleGameMode={toggleGameMode} localRemoveCachedBoard={localRemoveCachedBoard} setGameDifficulty={setDifficulty} />
         <Game />
     </div>;
 };

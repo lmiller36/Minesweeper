@@ -5,8 +5,8 @@ import {
     getGame,
     getGameInSetupMode,
     getInMainMenu,
-} from './selectors';
-import { setupNewGame, continueGame } from './actions';
+} from '../../selectors';
+import { setupNewGame, continueGame } from '../../actions';
 
 const MainMenu = ({ game, inSetupMode, setupNewGame, inMainMenu, continueGame }) => {
     const MainMenuContainer = styled.div`

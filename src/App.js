@@ -1,13 +1,14 @@
-/* eslint-disable no-undef */
 import React from 'react';
-import GameDisplay from './GameDisplay';
 import { connect } from 'react-redux';
 import { pageLoadedSetup } from './actions'
 import './App.css';
-import MainMenu from './MainMenu';
+
 import Logo from './Logo';
 import { getInMainMenu } from './selectors';
-import NewGameMenu from './NewGameMenu';
+import MainMenu from './Pages/MainMenu/MainMenu';
+import GameSetup from './Pages/GameSetup/GameSetup';
+import GameDisplay from './Pages/InGame/GameDisplay';
+
 
 class App extends React.Component {
     componentDidMount() {
@@ -20,7 +21,7 @@ class App extends React.Component {
                 <Logo />
                 {/* Page State of App */}
                 <MainMenu />
-                <NewGameMenu />
+                <GameSetup />
                 <GameDisplay />
                 
             </div>
