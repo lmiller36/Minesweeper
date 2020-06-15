@@ -4,7 +4,6 @@ import { pageLoadedSetup } from './actions'
 import './App.css';
 
 import Logo from './Logo';
-import { getInMainMenu } from './selectors';
 import MainMenu from './Pages/MainMenu/MainMenu';
 import GameSetup from './Pages/GameSetup/GameSetup';
 import GameDisplay from './Pages/InGame/GameDisplay';
@@ -23,19 +22,14 @@ class App extends React.Component {
                 <MainMenu />
                 <GameSetup />
                 <GameDisplay />
-                
             </div>
         </div>
     }
 }
-
-const mapStateToProps = (state) => ({
-    inMainMenu: getInMainMenu(state),
-});
 
 const mapDispatchToProps = (dispatch) => ({
     pageLoadedSetup: () => dispatch(pageLoadedSetup()),
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

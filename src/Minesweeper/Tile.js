@@ -26,7 +26,7 @@ const Tile = ({ tile, gameMode, click }) => {
             position: 'absolute',
             left: '10',
             top: '10',
-            opacity: '.6'
+            opacity: '.3'
         }} icon={faFlag} />
     </TileWrapper>;
 };

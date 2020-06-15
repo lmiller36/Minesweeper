@@ -2,30 +2,38 @@ import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import {
-    getStartTime,
-    getCurrentTime,
+    isPaused,
+    getTimeElapsed,
+    isPageSelected,
 } from '../../selectors';
+
+import { IN_GAME } from '../../Constants';
+
+import { updateTimer } from "../../actions";
 
 const TimerWrapper = styled.div``;
 
-const Timer = (startTime) => {
-    const actualStartTime = startTime.startTime;
-    const now = startTime.now;
-    const milliseconds = 1000;
-    const timeElapsed = now - actualStartTime;
+const Timer = ({ timeElapsed, isPaused, updateTimer, inGame }) => {
+    let incrementTimer = () => {
+        setTimeout(() => {
+            if (inGame && !isPaused) updateTimer(timeElapsed + 1);
+        }, 1000)
+    };
 
-    let seconds = 0;
+    incrementTimer();
 
-    if (!isNaN(seconds)) {
-        seconds = Math.round(timeElapsed / milliseconds);
-    }
-
-    return <TimerWrapper>{seconds}</TimerWrapper>;
+    return <TimerWrapper>{timeElapsed}</TimerWrapper>;
 };
 
 const mapStateToProps = (state) => ({
-    startTime: getStartTime(state),
-    now: getCurrentTime(state),
+    timeElapsed: getTimeElapsed(state),
+    isPaused: isPaused(state),
+    inGame: isPageSelected(state, IN_GAME),
 });
 
-export default connect(mapStateToProps)(Timer);
+const mapDispatchToProps = (dispatch) => ({
+    updateTimer: (timeElapsed) => dispatch(updateTimer(timeElapsed)),
+    // removeCachedBoard: () => dispatch(removeCachedBoard()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);

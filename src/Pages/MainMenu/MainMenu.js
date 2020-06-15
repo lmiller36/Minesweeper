@@ -2,18 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import {
-    getGame,
-    getGameInSetupMode,
-    getInMainMenu,
+    isPageSelected,
+    previousGameExists,
 } from '../../selectors';
-import { setupNewGame, continueGame } from '../../actions';
+import { switchPages } from '../../actions';
+import { MAIN_MENU, IN_GAME, SETUP_NEW_GAME } from '../../Constants';
 
-const MainMenu = ({ game, inSetupMode, setupNewGame, inMainMenu, continueGame }) => {
+const MainMenu = ({ continuePreviousGame, inSetupMode, setupNewGame, inMainMenu, continueGame }) => {
     const MainMenuContainer = styled.div`
         display:${!!inSetupMode ? "none" : "inline-grid"};
     `;
-
-    const continuePreviousGame = (game.board.length !== 0);
 
     return <div style={{ display: inMainMenu ? "" : "none" }}>
 
@@ -25,6 +23,7 @@ const MainMenu = ({ game, inSetupMode, setupNewGame, inMainMenu, continueGame })
 
             <button onClick={() => {
                 setupNewGame();
+
             }}>New Game</button>
 
             <button>Settings </button>
@@ -34,14 +33,14 @@ const MainMenu = ({ game, inSetupMode, setupNewGame, inMainMenu, continueGame })
 };
 
 const mapStateToProps = (state) => ({
-    game: getGame(state),
-    inMainMenu: getInMainMenu(state),
-    inSetupMode: getGameInSetupMode(state),
+    continuePreviousGame: previousGameExists(state),
+    inMainMenu: isPageSelected(state, MAIN_MENU),
+    inSetupMode: isPageSelected(state, SETUP_NEW_GAME),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setupNewGame: () => dispatch(setupNewGame()),
-    continueGame: () => dispatch(continueGame()),
+    setupNewGame: () => dispatch(switchPages(SETUP_NEW_GAME)),
+    continueGame: () => dispatch(switchPages(IN_GAME)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainMenu);

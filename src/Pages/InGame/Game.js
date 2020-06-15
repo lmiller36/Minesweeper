@@ -13,26 +13,27 @@ import {
     getGameDifficulty,
 
 } from '../../selectors';
-import { initializeBoard, updateBoard, removeCachedBoard, initializeTimer, updateTimer, toggleGameMode, setGameDifficulty } from '../../actions';
+import { initializeBoard, updateBoard, removeCachedBoard, toggleGameMode, startGame, switchPages, } from '../../actions';
 
 import MinesweeperGame from '../..//Minesweeper/Minesweeper';
+import { IN_GAME } from '../../Constants';
 
-let stop = false;
 let emptyBoard = null;
 
 let first = true;
-const secondInMilli = 1000;
 
 const Game = ({
     // state
     board, game, isSet, gameMode, gameDifficulty,
     // actions
-    performInitialSetup, updateBoard, setStartTime, updateTimer, toggleGameMode,
+    performInitialSetup, updateBoard, setStartTime, updateTimer, firstClick, toggleGameMode, localRemoveCachedBoard
 }) => {
+
+    console.log(game);
 
     const GameWrapper = styled.div`
         display: inline-grid;
-        grid-template-columns: repeat(${gameDifficulty.cols},1fr);
+        grid-template-columns: repeat(${gameDifficulty ? gameDifficulty.cols : 0},1fr);
     `;
 
     emptyBoard = new MinesweeperGame({
@@ -52,17 +53,9 @@ const Game = ({
 
 
     const initialTileClick = (tile) => {
-        stop = false;
         const newGame = new MinesweeperGame(gameDifficulty, tile.index);
         performInitialSetup(newGame);
-        const timerInterval = setInterval(() => {
-            updateTimer(new Date());
-            if (stop) {
-                clearInterval(timerInterval);
-            }
-        }, secondInMilli);
-
-        setStartTime(new Date(), timerInterval);
+        firstClick();
     };
 
     const bombClick = () => {
@@ -71,17 +64,17 @@ const Game = ({
 
     const unopenedTileClick = (tile) => {
         game.clickTile(tile);
-        updateBoard(game.board);
-    };
+        updateBoard();
+    }
 
     const flagClick = (tile) => {
         game.flagTile(tile);
-        updateBoard(game.board);
+        updateBoard();
     };
 
     const openNeighbors = (tile) => {
         game.openNeighbors(tile);
-        updateBoard(game.board);
+        updateBoard();
     };
 
     function isClicked(tile) {
@@ -146,13 +139,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     performInitialSetup: (newGame) => dispatch(initializeBoard(newGame)),
-    updateBoard: (tile) => dispatch(updateBoard(tile)),
+    firstClick: () => dispatch(switchPages(IN_GAME)),
+    updateBoard: () => dispatch(updateBoard()),
     removeCachedBoard: () => dispatch(removeCachedBoard()),
-    setStartTime: (startTime, interval) => dispatch(initializeTimer(startTime, interval)),
-    updateTimer: (now) => dispatch(updateTimer(now)),
     toggleGameMode: () => dispatch(toggleGameMode()),
     localRemoveCachedBoard: () => dispatch(removeCachedBoard()),
-    setDifficulty: (newDifficulty) => dispatch(setGameDifficulty(newDifficulty)),
+    setDifficulty: (newDifficulty) => dispatch(startGame(newDifficulty)),
 });
 
 

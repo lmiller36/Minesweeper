@@ -145,11 +145,7 @@ class MinesweeperGame {
 
         return { x: x, y: y };
     }
-
-    // setupGame(initialClick) {
-    //     return createBoard(10, 10, 15, this.indexToPos(initialClick));
-    // }
-
+    
     clickTile(tile) {
         this.openNonBombNeighbors(tile);
     }

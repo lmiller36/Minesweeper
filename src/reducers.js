@@ -2,80 +2,85 @@ import {
     INITIALIZE_BOARD,
     REMOVE_CACHED_BOARD,
     UPDATE_BOARD,
-    INITILIZE_TIMER,
     UPDATE_TIMER,
     TOGGLE_GAME_MODE,
-    SET_GAME_DIFFICULTY,
-    SETUP_NEW_GAME,
+    START_GAME,
     PAGE_LOADED_SETUP,
-    CONTINUE_GAME,
+    SWITCH_PAGES,
 } from './actions';
-import { EASY, MAIN_MENU } from './Constants';
+import { EASY, MAIN_MENU, ALL_PAGES } from './Constants';
 
 
 
-const initialState = { difficulty: EASY, game: { board: [], isSet: false } };
+const initialState = {
+    gameProps: {
+        difficulty: EASY,
+        isPaused: false,
+        game: {
+            board: []
+        },
+        timeElapsed: 0,
+        isSet: false,
+    },
+    pages: {}
+};
 
 export const data = (state = initialState, action) => {
     const { type, payload } = action;
 
-    console.log(type);
-
     switch (type) {
         case PAGE_LOADED_SETUP: {
+            ALL_PAGES.forEach(page => {
+                state.pages[page] = false;
+            })
+            state.pages[MAIN_MENU] = true;
+
             return {
                 ...state,
-                inSetupMode: false,
-                inMainMenu: true,
-                inGame: false,
+                gameProps: {
+                    ...state.gameProps,
+                    gameMode: 'clicking',
+                },
+                // gameMode: 'clicking',
             }
         }
 
         case INITIALIZE_BOARD: {
             const { game } = payload;
-            const board = game.board;
 
             return {
                 ...state,
-                game: game,
-                board: board,
-                isSet: true,
-                update: 0,
-                shouldRerender: 0,
-                now: null,
-                startTime: null,
-                gameMode: 'clicking',
-                timerInterval: null,
+                gameProps: {
+                    ...state.gameProps,
+                    game: game,
+                    isSet: true,
+                    update: 0,
+                    shouldRerender: 0,
+                    gameMode: 'clicking',
+                    isPaused: false,
+                },
             };
         }
 
         case UPDATE_BOARD: {
-            const { game } = payload;
-
             return {
                 ...state,
-                shouldRerender: state.shouldRerender + 1,
-                board: game,
-            };
-        }
-
-        case INITILIZE_TIMER: {
-            const { startTime, timerInterval } = payload;
-
-            return {
-                ...state,
-                now: startTime,
-                startTime: startTime,
-                timerInterval: timerInterval,
+                gameProps: {
+                    ...state.gameProps,
+                    shouldRerender: state.gameProps.shouldRerender + 1,
+                }
             };
         }
 
         case UPDATE_TIMER: {
-            const { now } = payload;
+            const { timeElapsed } = payload;
 
             return {
                 ...state,
-                now: now,
+                gameProps: {
+                    ...state.gameProps,
+                    timeElapsed: timeElapsed,
+                }
             };
         }
 
@@ -83,60 +88,52 @@ export const data = (state = initialState, action) => {
 
             return {
                 ...state,
-                timerInterval: null,
-                now: null,
-                isSet: false,
-                startTime: null,
-                game: {
-                    board: []
+                gameProps: {
+                    isSet: false,
+                    game: {
+                        board: [],
+                    },
+                    isPaused: false,
+                    timeElapsed: 0,
                 },
-                difficulty: EASY,
             };
         }
+
         case TOGGLE_GAME_MODE: {
-            const newMode = state.gameMode === 'clicking' ? 'flagging' : 'clicking';
+            const newMode = state.gameProps.gameMode === 'clicking' ? 'flagging' : 'clicking';
 
             return {
                 ...state,
-                gameMode: newMode,
+                gameProps: {
+                    ...state.gameProps,
+                    gameMode: newMode,
+                }
             };
         }
-        case SET_GAME_DIFFICULTY: {
+
+        case START_GAME: {
             const { difficulty } = payload;
             return {
                 ...state,
-                difficulty: difficulty,
-                inSetupMode: false,
-                inMainMenu: false,
-                inGame: true,
+                gameProps: {
+                    ...state.gameProps,
+                    difficulty: difficulty,
+                }
             };
         }
-        case SETUP_NEW_GAME: {
+
+        case SWITCH_PAGES: {
+            const { PAGE } = payload;
+
+            ALL_PAGES.forEach((page) => {
+                state["pages"][page] = page === PAGE;
+            });
+
             return {
                 ...state,
-                inSetupMode: true,
-                inMainMenu: false,
-                inGame: false,
             }
         }
 
-        case MAIN_MENU: {
-            return {
-                ...state,
-                inSetupMode: false,
-                inMainMenu: true,
-                inGame: false,
-            }
-        }
-
-        case CONTINUE_GAME: {
-            return {
-                ...state,
-                inSetupMode: false,
-                inMainMenu: false,
-                inGame: true,
-            }
-        }
         default: {
             return state;
         }

@@ -4,16 +4,16 @@ import { connect } from 'react-redux';
 import { faMousePointer, faFlag, faRedo, faHome } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    getBoard,
     getGame,
     getGameMode,
     getGameDifficulty,
-
+    getRemainingBombs,
 } from '../../selectors';
 import {
-    mainMenu
+    startGame, removeCachedBoard, toggleGameMode, switchPages
 } from '../../actions'
 import Timer from './Timer';
+import { MAIN_MENU } from '../../Constants';
 
 const InGameMenuWrapper = styled.div`
     display:flex;
@@ -22,13 +22,13 @@ const InGameMenuWrapper = styled.div`
 `;
 
 const InGameMenu = ({
-    game, gameMode, gameDifficulty, toggleGameMode, localRemoveCachedBoard, setGameDifficulty, mainMenu
+    game, gameMode, gameDifficulty, toggleGameMode, localRemoveCachedBoard, startGame, mainMenu, remainingBombs
 }) => {
 
     return <InGameMenuWrapper>
         <FontAwesomeIcon size='2x' icon={faHome} onClick={() => { mainMenu() }} />
         <Timer />
-        <div>{game.remaining}</div>
+        <div>{remainingBombs}</div>
 
         <div >
             <FontAwesomeIcon
@@ -44,21 +44,24 @@ const InGameMenu = ({
 
         <FontAwesomeIcon size='2x' icon={faRedo} onClick={() => {
             localRemoveCachedBoard();
-            setGameDifficulty(gameDifficulty);
+            startGame(gameDifficulty);
         }} />
 
     </InGameMenuWrapper>;
 };
 
 const mapStateToProps = (state) => ({
-    board: getBoard(state),
     game: getGame(state),
     gameMode: getGameMode(state),
     gameDifficulty: getGameDifficulty(state),
+    remainingBombs: getRemainingBombs(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    mainMenu: () => dispatch(mainMenu()),
+    mainMenu: () => dispatch(switchPages(MAIN_MENU)),
+    startGame: (gameDifficulty) => dispatch(startGame(gameDifficulty)),
+    toggleGameMode: () => dispatch(toggleGameMode()),
+    localRemoveCachedBoard: () => dispatch(removeCachedBoard()),
 });
 
 

@@ -12,59 +12,45 @@ export const initializeBoard = (game) => ({
 });
 
 export const UPDATE_BOARD = 'UPDATE_BOARD';
-export const updateBoard = (game) => ({
+export const updateBoard = () => ({
     type: UPDATE_BOARD,
-    payload: { game },
+    payload: {},
 });
 
 
 export const REMOVE_CACHED_BOARD = 'REMOVE_CACHED_BOARD';
 export const removeCachedBoard = () => ({
     type: REMOVE_CACHED_BOARD,
-    payload: { },
+    payload: {},
 });
 
-export const INITILIZE_TIMER = 'INITILIZE_TIMER';
-export const initializeTimer = (startTime) => ({
-    type: INITILIZE_TIMER,
-    payload: {startTime},
+export const START_TIMER = 'START_TIMER';
+export const startTimer = (startTime) => ({
+    type: START_TIMER,
+    payload: { startTime },
 });
 
 export const UPDATE_TIMER = 'UPDATE_TIMER';
-export const updateTimer = (now) => ({
+export const updateTimer = (timeElapsed) => ({
     type: UPDATE_TIMER,
-    payload: {now},
+    payload: { timeElapsed },
 });
 
 export const TOGGLE_GAME_MODE = 'TOGGLE_GAME_MODE';
 export const toggleGameMode = (now) => ({
     type: TOGGLE_GAME_MODE,
-    payload: {now},
+    payload: { now },
 });
 
-export const SET_GAME_DIFFICULTY = 'SET_GAME_DIFFICULTY';
-export const setGameDifficulty = (difficulty) => ({
-    type: SET_GAME_DIFFICULTY,
-    payload: {difficulty},
+export const START_GAME = 'START_GAME';
+export const startGame = (difficulty) => ({
+    type: START_GAME,
+    payload: { difficulty },
 });
 
-export const SETUP_NEW_GAME = 'SETUP_NEW_GAME';
-export const setupNewGame = () => ({
-    type: SETUP_NEW_GAME,
-    payload: {},
+export const SWITCH_PAGES = 'SWITCH_PAGES';
+export const switchPages = (PAGE) => ({
+    type: SWITCH_PAGES,
+    payload: { PAGE },
 });
-
-export const CONTINUE_GAME = 'CONTINUE_GAME';
-export const continueGame = () => ({
-    type: CONTINUE_GAME,
-    payload: {},
-});
-
-export const MAIN_MENU = 'MAIN_MENU';
-export const mainMenu = () => ({
-    type: MAIN_MENU,
-    payload: {},
-});
-
-
 

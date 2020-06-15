@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { EASY, MEDIUM, HARD, DIFFICULTIES } from '../../Constants';
-import { removeCachedBoard, setGameDifficulty } from '../../actions';
+import { EASY, MEDIUM, HARD, DIFFICULTIES, SETUP_NEW_GAME, IN_GAME_FIRST_CLICK } from '../../Constants';
+import { removeCachedBoard, startGame, switchPages } from '../../actions';
 import {
-    getGameInSetupMode,
+    isPageSelected,
 } from '../../selectors';
 
 import { capitalize } from '../../utils'
 
-const GameSetup = ({ localRemoveCachedBoard, setGameDifficulty, inSetupMode }) => {
+const GameSetup = ({ localRemoveCachedBoard, startGame, inSetupMode, switchToGame }) => {
 
     const GameSetupContainer = styled.div`
         display: ${inSetupMode ? "inline-grid" : "none"};
@@ -28,15 +28,13 @@ const GameSetup = ({ localRemoveCachedBoard, setGameDifficulty, inSetupMode }) =
         }
 
         let gameDifficulty = EASY;
-
-        //TODO change to constants
-        if (selectedValue === "MEDIUM") {
+        if (selectedValue === MEDIUM.key) {
             gameDifficulty = MEDIUM;
-        } else if (selectedValue === 'HARD') {
+        } else if (selectedValue === HARD.key) {
             gameDifficulty = HARD;
         }
 
-        setGameDifficulty(gameDifficulty);
+        startGame(gameDifficulty);
     }
 
     return <GameSetupContainer>
@@ -50,18 +48,22 @@ const GameSetup = ({ localRemoveCachedBoard, setGameDifficulty, inSetupMode }) =
                 </div>
             })
         }
-        <button onClick={startNewGame}>Start Game </button>
+        <button onClick={() => {
+            startNewGame();
+            switchToGame();
+        }}>Start Game </button>
     </GameSetupContainer>
 };
 
 const mapStateToProps = (state) => ({
-    inSetupMode: getGameInSetupMode(state),
+    inSetupMode: isPageSelected(state, SETUP_NEW_GAME),
 });
 
 
 const mapDispatchToProps = (dispatch) => ({
     localRemoveCachedBoard: () => dispatch(removeCachedBoard()),
-    setGameDifficulty: (newDifficulty) => dispatch(setGameDifficulty(newDifficulty)),
+    startGame: (newDifficulty) => dispatch(startGame(newDifficulty)),
+    switchToGame: () => dispatch(switchPages(IN_GAME_FIRST_CLICK)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameSetup);
