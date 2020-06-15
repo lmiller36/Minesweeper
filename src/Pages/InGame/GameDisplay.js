@@ -18,7 +18,7 @@ const GameDisplay = ({
         display:${loss ? "" : "none"};
     `;
 
-    return <div style={{ display: inGame ? "" : "none" }} >
+    return <div style={{ display: inGame ? "inline-block" : "none" }} >
         <InGameMenu />
         <Win>
             <iframe title="winGIF" src="https://giphy.com/embed/peAFQfg7Ol6IE" width="480" height="455" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>

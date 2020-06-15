@@ -6,6 +6,7 @@
     margin: 0 auto;
 }
 .App {
+    width:100%;
     display: table;
     margin: 0 auto;
 }

@@ -8,27 +8,30 @@ import {
 } from '../../selectors';
 import { switchPages } from '../../actions';
 import { MAIN_MENU, IN_GAME, SETUP_NEW_GAME } from '../../Constants';
-
+import './Buttons.css'
 const MainMenu = ({ continuePreviousGame, inSetupMode, setupNewGame, inMainMenu, continueGame }) => {
     const MainMenuContainer = styled.div`
         display:${!!inSetupMode ? "none" : "inline-grid"};
     `;
 
-    return <div style={{ display: inMainMenu ? "" : "none" }}>
+    const StyledMainMenuButton = styled.div`
+    `;
+
+    return <div style={{ display: inMainMenu ? "" : "none", marginTop: "20px" }}>
 
         <MainMenuContainer>
 
-            <button style={{ display: `${continuePreviousGame ? "" : "none"}` }} onClick={() => {
+            <StyledMainMenuButton className="button" style={{ display: `${continuePreviousGame ? "" : "none"}` }} onClick={() => {
                 continueGame();
-            }}>Continue Game </button>
+            }}><span>Continue Game </span></StyledMainMenuButton>
 
-            <button onClick={() => {
+            <StyledMainMenuButton className="button" onClick={() => {
                 setupNewGame();
 
-            }}>New Game</button>
+            }}><span>New Game </span></StyledMainMenuButton>
 
-            <button>Settings </button>
-            <button>How To Play </button>
+            <StyledMainMenuButton className="button" ><span>Settings</span> </StyledMainMenuButton>
+            <StyledMainMenuButton className="button" ><span>How To Play </span> </StyledMainMenuButton>
         </MainMenuContainer>
     </div>
 };

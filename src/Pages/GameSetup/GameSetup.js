@@ -16,7 +16,6 @@ const GameSetup = ({ localRemoveCachedBoard, startGame, inSetupMode, switchToGam
     `;
 
     const startNewGame = () => {
-        localRemoveCachedBoard();
 
         const gameDifficultySelector = document.querySelectorAll('input[name=\'gameDifficulty\']');
         let selectedValue;
@@ -27,14 +26,25 @@ const GameSetup = ({ localRemoveCachedBoard, startGame, inSetupMode, switchToGam
             }
         }
 
-        let gameDifficulty = EASY;
-        if (selectedValue === MEDIUM.key) {
+        let gameDifficulty = null;
+        
+        if (selectedValue === EASY.key) {
+            gameDifficulty = EASY;
+        }
+        else if (selectedValue === MEDIUM.key) {
             gameDifficulty = MEDIUM;
         } else if (selectedValue === HARD.key) {
             gameDifficulty = HARD;
         }
 
-        startGame(gameDifficulty);
+        console.log(gameDifficulty)
+
+        if (gameDifficulty){
+            localRemoveCachedBoard();
+            startGame(gameDifficulty);
+            switchToGame();
+        }
+        
     }
 
     return <GameSetupContainer>
@@ -50,7 +60,6 @@ const GameSetup = ({ localRemoveCachedBoard, startGame, inSetupMode, switchToGam
         }
         <button onClick={() => {
             startNewGame();
-            switchToGame();
         }}>Start Game </button>
     </GameSetupContainer>
 };
