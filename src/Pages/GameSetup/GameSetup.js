@@ -7,6 +7,8 @@ import {
     isPageSelected,
 } from '../../selectors';
 
+import './GameSetup.css'
+
 import { capitalize } from '../../utils'
 
 const GameSetup = ({ localRemoveCachedBoard, startGame, inSetupMode, switchToGame }) => {
@@ -27,7 +29,7 @@ const GameSetup = ({ localRemoveCachedBoard, startGame, inSetupMode, switchToGam
         }
 
         let gameDifficulty = null;
-        
+
         if (selectedValue === EASY.key) {
             gameDifficulty = EASY;
         }
@@ -39,28 +41,29 @@ const GameSetup = ({ localRemoveCachedBoard, startGame, inSetupMode, switchToGam
 
         console.log(gameDifficulty)
 
-        if (gameDifficulty){
+        if (gameDifficulty) {
             localRemoveCachedBoard();
             startGame(gameDifficulty);
             switchToGame();
         }
-        
     }
 
-    return <GameSetupContainer>
+    return <GameSetupContainer style={{ marginTop: 20 }}>
         {
             Object.keys(DIFFICULTIES).map((key) => {
                 const difficulty = DIFFICULTIES[key];
                 const msg = `${capitalize(key)} (${difficulty.rows} x ${difficulty.cols}, ${difficulty.numBombs} mines)`
-                return <div>
-                    <input type='radio' id={key} name='gameDifficulty' value={key} />
-                    <label htmlFor={key}>{msg}</label>
-                </div>
+                return <label className="container">{msg}
+                    <input type="radio" id={key} name="gameDifficulty" value={key} />
+                    <span className="checkmark"></span>
+                </label>
             })
         }
-        <button onClick={() => {
+
+        <div id="testbutton" onClick={() => {
             startNewGame();
-        }}>Start Game </button>
+        }}></div>
+
     </GameSetupContainer>
 };
 
