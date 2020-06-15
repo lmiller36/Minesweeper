@@ -18,7 +18,7 @@ class App extends React.Component {
         return <div className="App-Wrapper">
             <div className="App">
                 <Logo />
-                {/* Page State of App */}
+                {/* Pages */}
                 <MainMenu />
                 <GameSetup />
                 <GameDisplay />

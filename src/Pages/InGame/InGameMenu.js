@@ -10,6 +10,7 @@ import {
     getRemainingBombs,
     isPaused,
     isPageSelected,
+    gameOver,
 } from '../../selectors';
 import {
     startGame,
@@ -29,7 +30,7 @@ const InGameMenuWrapper = styled.div`
 `;
 
 const InGameMenu = ({
-    gameMode, isPaused, gameDifficulty, toggleGameMode, inGameFirstClick, localRemoveCachedBoard, startGame, mainMenu, remainingBombs, toggledPause, inGame
+    gameMode, isPaused, gameDifficulty, toggleGameMode, inGameFirstClick, localRemoveCachedBoard, startGame, mainMenu, remainingBombs, toggledPause, inGame, gameOver
 }) => {
 
     return <InGameMenuWrapper>
@@ -37,19 +38,18 @@ const InGameMenu = ({
         <Timer />
         <div>{remainingBombs}</div>
 
-        <div >
-            <FontAwesomeIcon
-                size='2x'
-                icon={gameMode === 'flagging' ? faFlag : faMousePointer}
-                onClick={
-                    () => {
-                        toggleGameMode();
-                    }
+        <FontAwesomeIcon
+            size='2x'
+            style={{ display: `${!gameOver ? "" : "none"}` }}
+            icon={gameMode === 'flagging' ? faFlag : faMousePointer}
+            onClick={
+                () => {
+                    toggleGameMode();
                 }
-            />
-        </div>
+            }
+        />
 
-        <FontAwesomeIcon style={{ display: `${inGame ? "" : "none"}` }} size='2x' icon={isPaused ? faPlay : faPause} onClick={toggledPause} />
+        <FontAwesomeIcon style={{ display: `${inGame && !gameOver ? "" : "none"}` }} size='2x' icon={isPaused ? faPlay : faPause} onClick={toggledPause} />
 
         <FontAwesomeIcon size='2x' icon={faRedo} onClick={() => {
             localRemoveCachedBoard();
@@ -66,7 +66,8 @@ const mapStateToProps = (state) => ({
     gameDifficulty: getGameDifficulty(state),
     remainingBombs: getRemainingBombs(state),
     isPaused: isPaused(state),
-    inGame: isPageSelected(state, IN_GAME)
+    inGame: isPageSelected(state, IN_GAME),
+    gameOver: gameOver(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

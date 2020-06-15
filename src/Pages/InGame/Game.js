@@ -12,6 +12,7 @@ import {
     getGameMode,
     getGameDifficulty,
     isPaused,
+    gameOver,
 } from '../../selectors';
 import { initializeBoard, updateBoard, removeCachedBoard, toggleGameMode, startGame, switchPages, } from '../../actions';
 
@@ -24,7 +25,7 @@ let first = true;
 
 const Game = ({
     // state
-    board, game, isSet, gameMode, gameDifficulty, isPaused,
+    board, game, isSet, gameMode, gameDifficulty, isPaused, gameOver,
     // actions
     performInitialSetup, updateBoard, firstClick, toggleGameMode,
 }) => {
@@ -43,13 +44,13 @@ const Game = ({
     if (first && isSet) {
         window.addEventListener('keydown', (event) => {
             if (event.key === 'F' || event.key === 'f') {
+                if(gameOver) return;
                 toggleGameMode();
             }
         }, false);
         first = false;
     }
     const visibleBoard = isSet ? board : emptyBoard.board;
-
 
     const initialTileClick = (tile) => {
         const newGame = new MinesweeperGame(gameDifficulty, tile.index);
@@ -58,7 +59,7 @@ const Game = ({
     };
 
     const bombClick = () => {
-        alert('LOSS!');
+        game.lose();
     };
 
     const unopenedTileClick = (tile) => {
@@ -93,6 +94,8 @@ const Game = ({
                     gameMode={gameMode}
                     click={
                         (tile) => {
+                            if (gameOver) return;
+
                             if (!isSet) {
                                 initialTileClick(tile);
                                 return;
@@ -133,6 +136,7 @@ const mapStateToProps = (state) => ({
     gameMode: getGameMode(state),
     gameDifficulty: getGameDifficulty(state),
     isPaused: isPaused(state),
+    gameOver: gameOver(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

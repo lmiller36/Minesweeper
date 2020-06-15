@@ -30,6 +30,12 @@ export const togglePauseGame = () => ({
     payload: {},
 });
 
+export const END_GAME = 'END_GAME';
+export const endGame = (didWin) => ({
+    type: END_GAME,
+    payload: {didWin},
+});
+
 
 export const UPDATE_TIMER = 'UPDATE_TIMER';
 export const updateTimer = (timeElapsed) => ({

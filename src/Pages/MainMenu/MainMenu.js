@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {
     isPageSelected,
     previousGameExists,
+    gameOver,
 } from '../../selectors';
 import { switchPages } from '../../actions';
 import { MAIN_MENU, IN_GAME, SETUP_NEW_GAME } from '../../Constants';
@@ -33,7 +34,7 @@ const MainMenu = ({ continuePreviousGame, inSetupMode, setupNewGame, inMainMenu,
 };
 
 const mapStateToProps = (state) => ({
-    continuePreviousGame: previousGameExists(state),
+    continuePreviousGame: previousGameExists(state) && !gameOver(state),
     inMainMenu: isPageSelected(state, MAIN_MENU),
     inSetupMode: isPageSelected(state, SETUP_NEW_GAME),
 });

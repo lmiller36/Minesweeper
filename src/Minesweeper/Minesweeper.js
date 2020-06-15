@@ -22,6 +22,8 @@ class MinesweeperGame {
         this.nonBombs = (rows * cols) - numBombs;
         this.remaining = (rows * cols) - numBombs;
         this.opened = new Set();
+        this.gameOver = false;
+        this.didWin = false;
         if (this.bombs === 0) {
             this.board = genNonBombs(rows * cols);
         } else {
@@ -145,7 +147,7 @@ class MinesweeperGame {
 
         return { x: x, y: y };
     }
-    
+
     clickTile(tile) {
         this.openNonBombNeighbors(tile);
     }
@@ -205,13 +207,27 @@ class MinesweeperGame {
         }
         this.opened.add(index);
         if (this.opened.size === this.nonBombs) {
-            alert('WIN!');
+            this.win();
+            return;
         }
+    }
+
+    gameOver() {
+        return this.gameOver;
+    }
+
+    win() {
+        this.gameOver = true;
+        this.didWin = true;
+    }
+
+    lose() {
+        this.gameOver = true;
     }
 
     openNonBombNeighbors(tileToOpen) {
         if (tileToOpen.type === 'bomb') {
-            alert('loss!');
+            this.lose();
             return;
         }
         const pos = this.indexToPos(tileToOpen.index, this.cols);

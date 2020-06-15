@@ -8,6 +8,7 @@ import {
     PAGE_LOADED_SETUP,
     SWITCH_PAGES,
     TOGGLE_PAUSE_GAME,
+    END_GAME
 } from './actions';
 import { EASY, MAIN_MENU, ALL_PAGES } from './Constants';
 
@@ -42,7 +43,6 @@ export const data = (state = initialState, action) => {
                     ...state.gameProps,
                     gameMode: 'clicking',
                     isPaused: false,
-
                 },
             }
         }
@@ -149,6 +149,18 @@ export const data = (state = initialState, action) => {
             return {
                 ...state,
             }
+        }
+
+        case END_GAME: {
+            const { didWin } = payload;
+            return {
+                ...state,
+                gameProps: {
+                    ...state.gameProps,
+                    win: didWin,
+                    loss: !didWin,
+                }
+            };
         }
 
         default: {

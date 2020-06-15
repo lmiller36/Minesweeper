@@ -49,3 +49,12 @@ export const previousGameExists = (state) => {
 export const getRemainingBombs = (state) => {
     return 0;
 }
+export const getWin = (state) => {
+    return state.data.gameProps.game.didWin && state.data.gameProps.game.gameOver;
+}
+export const getLoss = (state) => {
+    return !state.data.gameProps.game.didWin && state.data.gameProps.game.gameOver;
+}
+export const gameOver = (state) => {
+    return state.data.gameProps.game.gameOver;
+}
