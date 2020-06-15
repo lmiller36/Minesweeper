@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { removeCachedBoard, toggleGameMode, startGame } from '../../actions';
 import InGameMenu from './InGameMenu';
-
-
 import Game from './Game';
 import { isPageSelected } from '../../selectors';
 import { IN_GAME, IN_GAME_FIRST_CLICK } from '../../Constants';

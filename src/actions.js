@@ -24,11 +24,12 @@ export const removeCachedBoard = () => ({
     payload: {},
 });
 
-export const START_TIMER = 'START_TIMER';
-export const startTimer = (startTime) => ({
-    type: START_TIMER,
-    payload: { startTime },
+export const TOGGLE_PAUSE_GAME = 'TOGGLE_PAUSE_GAME';
+export const togglePauseGame = () => ({
+    type: TOGGLE_PAUSE_GAME,
+    payload: {},
 });
+
 
 export const UPDATE_TIMER = 'UPDATE_TIMER';
 export const updateTimer = (timeElapsed) => ({

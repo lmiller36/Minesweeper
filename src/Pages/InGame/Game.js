@@ -11,7 +11,7 @@ import {
     plsRerender,
     getGameMode,
     getGameDifficulty,
-
+    isPaused,
 } from '../../selectors';
 import { initializeBoard, updateBoard, removeCachedBoard, toggleGameMode, startGame, switchPages, } from '../../actions';
 
@@ -24,15 +24,14 @@ let first = true;
 
 const Game = ({
     // state
-    board, game, isSet, gameMode, gameDifficulty,
+    board, game, isSet, gameMode, gameDifficulty, isPaused,
     // actions
-    performInitialSetup, updateBoard, setStartTime, updateTimer, firstClick, toggleGameMode, localRemoveCachedBoard
+    performInitialSetup, updateBoard, firstClick, toggleGameMode,
 }) => {
-
-    console.log(game);
 
     const GameWrapper = styled.div`
         display: inline-grid;
+        visibility: ${isPaused ? "hidden" : ""};
         grid-template-columns: repeat(${gameDifficulty ? gameDifficulty.cols : 0},1fr);
     `;
 
@@ -85,47 +84,45 @@ const Game = ({
         return false;
     }
 
-    return <div>
-        <GameWrapper>
-            {
-                visibleBoard.map((tile) => {
-                    return <Tile
-                        key={tile.index}
-                        tile={tile}
-                        gameMode={gameMode}
-                        click={
-                            (tile) => {
-                                if (!isSet) {
-                                    initialTileClick(tile);
-                                    return;
-                                }
-
-                                if (isClicked(tile)) {
-                                    openNeighbors(tile);
-                                    return;
-                                }
-
-                                if (gameMode === 'flagging') {
-                                    flagClick(tile);
-                                    return;
-                                }
-
-                                if (tile.isFlagged) {
-                                    return;
-                                }
-                                if (tile.type === 'bomb') {
-                                    bombClick(tile);
-                                    return;
-                                }
-
-                                unopenedTileClick(tile);
+    return <GameWrapper>
+        {
+            visibleBoard.map((tile) => {
+                return <Tile
+                    key={tile.index}
+                    tile={tile}
+                    gameMode={gameMode}
+                    click={
+                        (tile) => {
+                            if (!isSet) {
+                                initialTileClick(tile);
+                                return;
                             }
+
+                            if (isClicked(tile)) {
+                                openNeighbors(tile);
+                                return;
+                            }
+
+                            if (gameMode === 'flagging') {
+                                flagClick(tile);
+                                return;
+                            }
+
+                            if (tile.isFlagged) {
+                                return;
+                            }
+                            if (tile.type === 'bomb') {
+                                bombClick(tile);
+                                return;
+                            }
+
+                            unopenedTileClick(tile);
                         }
-                    />;
-                })
-            }
-        </GameWrapper>
-    </div>;
+                    }
+                />;
+            })
+        }
+    </GameWrapper>
 };
 
 const mapStateToProps = (state) => ({
@@ -135,6 +132,7 @@ const mapStateToProps = (state) => ({
     rerender: plsRerender(state),
     gameMode: getGameMode(state),
     gameDifficulty: getGameDifficulty(state),
+    isPaused: isPaused(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

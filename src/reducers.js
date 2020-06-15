@@ -7,6 +7,7 @@ import {
     START_GAME,
     PAGE_LOADED_SETUP,
     SWITCH_PAGES,
+    TOGGLE_PAUSE_GAME,
 } from './actions';
 import { EASY, MAIN_MENU, ALL_PAGES } from './Constants';
 
@@ -40,8 +41,9 @@ export const data = (state = initialState, action) => {
                 gameProps: {
                     ...state.gameProps,
                     gameMode: 'clicking',
+                    isPaused: false,
+
                 },
-                // gameMode: 'clicking',
             }
         }
 
@@ -84,6 +86,17 @@ export const data = (state = initialState, action) => {
             };
         }
 
+        case TOGGLE_PAUSE_GAME: {
+
+            return {
+                ...state,
+                gameProps: {
+                    ...state.gameProps,
+                    isPaused: !state.gameProps.isPaused,
+                }
+            }
+        }
+
         case REMOVE_CACHED_BOARD: {
 
             return {
@@ -118,6 +131,10 @@ export const data = (state = initialState, action) => {
                 gameProps: {
                     ...state.gameProps,
                     difficulty: difficulty,
+                    isPaused: false,
+                    timeElapsed: 0,
+                    shouldRerender: 0,
+                    gameMode: 'clicking',
                 }
             };
         }
