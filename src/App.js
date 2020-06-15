@@ -18,7 +18,7 @@ class App extends React.Component {
     }
     render() {
 
-        return <div className="App-Wrapper">
+        return <div className="App-Wrapper unselectable">
             <div className="App">
                 <Logo />
                 <Pages>

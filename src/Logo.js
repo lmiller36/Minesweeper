@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import './Shared.css';
 
 const LogoContainer = styled.div`
     width:100%;
