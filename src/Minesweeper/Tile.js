@@ -1,11 +1,14 @@
 /* eslint-disable func-style */
 /* eslint-disable no-magic-numbers */
 /* eslint-disable complexity */
-import React from 'react';
-import styled from 'styled-components';
 import { faFlag } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import styled from 'styled-components';
 import TileImage from './TileImageFactory';
+import { connect } from 'react-redux';
+import { getTile, changed } from '../selectors';
+
 
 const TileWrapper = styled.div`
     position:relative;
@@ -13,7 +16,10 @@ const TileWrapper = styled.div`
     height: 50px;
 `;
 
-const Tile = ({ tile, gameMode, click }) => {
+// let tileIndex = -1;
+
+const Tile = ({ tile, gameMode, click, index, changed }) => {
+
     return <TileWrapper
         onClick={() => {
             click(tile);
@@ -31,4 +37,13 @@ const Tile = ({ tile, gameMode, click }) => {
     </TileWrapper>;
 };
 
-export default Tile;
+
+const mapStateToProps = (state, ownProps) => ({
+    tile: getTile(state, ownProps),
+    changed: changed(state, ownProps),
+});
+
+
+export default connect(mapStateToProps)(Tile);
+
+// export default Tile;

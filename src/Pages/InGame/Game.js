@@ -31,17 +31,10 @@ const GameWrapper = styled.div`
 
 const Game = ({
     // state
-    board, game, isSet, gameMode, gameDifficulty, isPaused, gameOver,
+    game, isSet, gameMode, gameDifficulty, isPaused, gameOver,
     // actions
     performInitialSetup, updateBoard, firstClick, toggleGameMode,
 }) => {
-
-
-
-    emptyBoard = new MinesweeperGame({
-        ...gameDifficulty,
-        numBombs: 0,
-    }, null);
 
     if (first && isSet) {
         window.addEventListener('keydown', (event) => {
@@ -52,7 +45,6 @@ const Game = ({
         }, false);
         first = false;
     }
-    const visibleBoard = isSet ? board : emptyBoard.board;
 
     const initialTileClick = (tile) => {
         const newGame = new MinesweeperGame(gameDifficulty, tile.index);
@@ -89,43 +81,45 @@ const Game = ({
 
     return <GameWrapper isPaused={isPaused} gameDifficulty={gameDifficulty}>
         {
-            visibleBoard.map((tile) => {
-                return <Tile
-                    key={tile.index}
-                    tile={tile}
-                    gameMode={gameMode}
-                    click={
-                        (tile) => {
-                            if (gameOver) return;
+            game.board.length === 0 ? <div></div> :
+                game.board.map((tile) => {
+                    return <Tile
+                        key={tile.index}
+                        index={tile.index}
+                        gameMode={gameMode}
 
-                            if (!isSet) {
-                                initialTileClick(tile);
-                                return;
-                            }
+                        click={
+                            (tile) => {
+                                if (gameOver) return;
 
-                            if (isClicked(tile)) {
-                                openNeighbors(tile);
-                                return;
-                            }
+                                if (!isSet) {
+                                    initialTileClick(tile);
+                                    return;
+                                }
 
-                            if (gameMode === 'flagging') {
-                                flagClick(tile);
-                                return;
-                            }
+                                if (isClicked(tile)) {
+                                    openNeighbors(tile);
+                                    return;
+                                }
 
-                            if (tile.isFlagged) {
-                                return;
-                            }
-                            if (tile.type === 'bomb') {
-                                bombClick(tile);
-                                return;
-                            }
+                                if (gameMode === 'flagging') {
+                                    flagClick(tile);
+                                    return;
+                                }
 
-                            unopenedTileClick(tile);
+                                if (tile.isFlagged) {
+                                    return;
+                                }
+                                if (tile.type === 'bomb') {
+                                    bombClick(tile);
+                                    return;
+                                }
+
+                                unopenedTileClick(tile);
+                            }
                         }
-                    }
-                />;
-            })
+                    />;
+                })
         }
     </GameWrapper>
 };
@@ -134,7 +128,7 @@ const mapStateToProps = (state) => ({
     board: getBoard(state),
     isSet: getIsSet(state),
     game: getGame(state),
-    rerender: plsRerender(state),
+    // rerender: plsRerender(state),
     gameMode: getGameMode(state),
     gameDifficulty: getGameDifficulty(state),
     isPaused: isPaused(state),

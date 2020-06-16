@@ -41,8 +41,6 @@ const GameSetup = ({ localRemoveCachedBoard, startGame, inSetupMode, switchToGam
             gameDifficulty = HARD;
         }
 
-        console.log(gameDifficulty)
-
         if (gameDifficulty) {
             localRemoveCachedBoard();
             startGame(gameDifficulty);

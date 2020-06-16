@@ -65,6 +65,7 @@ class MinesweeperGame {
 
             finishedBoard[row][col] = {
                 ...finishedBoard[row][col],
+                status: 0,
                 index: this.posToArrIndex({ x: col, y: row }, cols),
                 numBombs: 0,
             };
@@ -149,6 +150,7 @@ class MinesweeperGame {
     }
 
     clickTile(tile) {
+        this.updateTileStatus(tile.index);
         this.openNonBombNeighbors(tile);
     }
 
@@ -156,6 +158,7 @@ class MinesweeperGame {
         const curr = this.board[tile.index];
         const flaggedState = curr.isFlagged;
         curr.isFlagged = !flaggedState;
+        this.updateTileStatus(tile.index);
     }
 
     indexWithinBounds(index) {
@@ -225,7 +228,15 @@ class MinesweeperGame {
         this.gameOver = true;
     }
 
+    updateTileStatus(index) {
+        var min = 1;
+        if (this.board[index].status) min = this.board[index].status;
+        this.board[index].status = min + 1;
+    }
+
     openNonBombNeighbors(tileToOpen) {
+        this.updateTileStatus(tileToOpen.index);
+
         if (tileToOpen.type === 'bomb') {
             this.lose();
             return;
@@ -235,6 +246,7 @@ class MinesweeperGame {
             return;
         }
         this.board[tileToOpen.index].isOpened = true;
+    
 
         this.decrementUsed(tileToOpen.index);
 

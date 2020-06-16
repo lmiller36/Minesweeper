@@ -58,3 +58,11 @@ export const getLoss = (state) => {
 export const gameOver = (state) => {
     return state.data.gameProps.game.gameOver;
 }
+
+export const changed = (state, ownProps) => {
+    return state.data.gameProps.game.board[ownProps.index].status;
+}
+
+export const getTile = (state, ownProps) => {
+    return  state.data.gameProps.game.board[ownProps.index];
+}

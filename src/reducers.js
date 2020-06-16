@@ -11,6 +11,7 @@ import {
     END_GAME
 } from './actions';
 import { EASY, MAIN_MENU, ALL_PAGES } from './Constants';
+import MinesweeperGame from './Minesweeper/Minesweeper';
 
 
 
@@ -126,11 +127,18 @@ export const data = (state = initialState, action) => {
 
         case START_GAME: {
             const { difficulty } = payload;
+
+            const game = new MinesweeperGame({
+                ...difficulty,
+                numBombs: 0,
+            }, null);
+
             return {
                 ...state,
                 gameProps: {
                     ...state.gameProps,
                     difficulty: difficulty,
+                    game: game,
                     isPaused: false,
                     timeElapsed: 0,
                     shouldRerender: 0,
