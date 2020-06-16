@@ -23,6 +23,12 @@ let emptyBoard = null;
 
 let first = true;
 
+const GameWrapper = styled.div`
+    display: inline-grid;
+    visibility: ${props => props.isPaused ? "hidden" : ""};
+    grid-template-columns: repeat(${props => props.gameDifficulty ? props.gameDifficulty.cols : 0},1fr);
+`;
+
 const Game = ({
     // state
     board, game, isSet, gameMode, gameDifficulty, isPaused, gameOver,
@@ -30,11 +36,7 @@ const Game = ({
     performInitialSetup, updateBoard, firstClick, toggleGameMode,
 }) => {
 
-    const GameWrapper = styled.div`
-        display: inline-grid;
-        visibility: ${isPaused ? "hidden" : ""};
-        grid-template-columns: repeat(${gameDifficulty ? gameDifficulty.cols : 0},1fr);
-    `;
+
 
     emptyBoard = new MinesweeperGame({
         ...gameDifficulty,
@@ -44,7 +46,7 @@ const Game = ({
     if (first && isSet) {
         window.addEventListener('keydown', (event) => {
             if (event.key === 'F' || event.key === 'f') {
-                if(gameOver) return;
+                if (gameOver) return;
                 toggleGameMode();
             }
         }, false);
@@ -85,7 +87,7 @@ const Game = ({
         return false;
     }
 
-    return <GameWrapper>
+    return <GameWrapper isPaused={isPaused} gameDifficulty={gameDifficulty}>
         {
             visibleBoard.map((tile) => {
                 return <Tile

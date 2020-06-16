@@ -11,11 +11,13 @@ import './GameSetup.css'
 
 import { capitalize } from '../../utils'
 
+const GameSetupContainer = styled.div`
+    display: ${props => props.inSetupMode ? "inline-grid" : "none"};
+`;
+
+
 const GameSetup = ({ localRemoveCachedBoard, startGame, inSetupMode, switchToGame }) => {
 
-    const GameSetupContainer = styled.div`
-        display: ${inSetupMode ? "inline-grid" : "none"};
-    `;
 
     const startNewGame = () => {
 
@@ -48,12 +50,12 @@ const GameSetup = ({ localRemoveCachedBoard, startGame, inSetupMode, switchToGam
         }
     }
 
-    return <GameSetupContainer style={{ marginTop: 20 }}>
+    return <GameSetupContainer inSetupMode={inSetupMode} style={{ marginTop: 20 }}>
         {
             Object.keys(DIFFICULTIES).map((key) => {
                 const difficulty = DIFFICULTIES[key];
                 const msg = `${capitalize(key)} (${difficulty.rows} x ${difficulty.cols}, ${difficulty.numBombs} mines)`
-                return <label className="container">{msg}
+                return <label key={key} className="container">{msg}
                     <input type="radio" id={key} name="gameDifficulty" value={key} />
                     <span className="checkmark"></span>
                 </label>

@@ -12,25 +12,19 @@ const Pages = styled.div`
     text-align: center;
 `;
 
-class App extends React.Component {
-    componentDidMount() {
-        this.props.pageLoadedSetup();
-    }
-    render() {
-
-        return <div className="App-Wrapper unselectable">
-            <div className="App">
-                <Logo />
-                <Pages>
-                    <MainMenu />
-                    <GameSetup />
-                    <GameDisplay />
-                </Pages>
+const App = ({ pageLoadedSetup }) => {
+    return <div className="App-Wrapper unselectable" onLoad={pageLoadedSetup}>
+        <div className="App">
+            <Logo />
+            <Pages>
+                <MainMenu />
+                <GameSetup />
+                <GameDisplay />
+            </Pages>
 
 
-            </div>
         </div>
-    }
+    </div>
 }
 
 const mapDispatchToProps = (dispatch) => ({

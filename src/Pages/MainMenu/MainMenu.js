@@ -9,18 +9,20 @@ import {
 import { switchPages } from '../../actions';
 import { MAIN_MENU, IN_GAME, SETUP_NEW_GAME } from '../../Constants';
 import './Buttons.css'
-const MainMenu = ({ continuePreviousGame, inSetupMode, setupNewGame, inMainMenu, continueGame }) => {
-    const MainMenuContainer = styled.div`
-        display:${!!inSetupMode ? "none" : "inline-grid"};
-    `;
 
-    const StyledMainMenuButton = styled.div`
-    `;
+const MainMenuContainer = styled.div`
+    display:${props => !!props.inSetupMode ? "none" : "inline-grid"};
+`;
+
+const StyledMainMenuButton = styled.div`
+`;
+
+
+const MainMenu = ({ continuePreviousGame, inSetupMode, setupNewGame, inMainMenu, continueGame }) => {
 
     return <div style={{ display: inMainMenu ? "" : "none", marginTop: "20px" }}>
 
-        <MainMenuContainer>
-
+        <MainMenuContainer inSetupMode={inSetupMode}>
             <StyledMainMenuButton className="button" style={{ display: `${continuePreviousGame ? "" : "none"}` }} onClick={() => {
                 continueGame();
             }}><span>Continue Game </span></StyledMainMenuButton>
