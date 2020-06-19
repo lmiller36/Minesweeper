@@ -1,0 +1,13 @@
+#croppedFirstClickBoard {
+
+    width: 1643px;
+    height: 1080px;
+    /* width: 2000px; width of container
+    height: 1500px; height of container */
+    overflow: hidden;
+    /* border: 5px solid black; */
+}
+
+#croppedFirstClickBoard img {
+    margin: -215px 0px 0px 0px;
+}

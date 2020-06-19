@@ -26,7 +26,7 @@ const MainMenu = ({ continuePreviousGame, inSetupMode, setupNewGame, inMainMenu,
             <StyledMainMenuButton className="button" onClick={() => { continueGame(); switchToInGame(); }} style={{ display: `${continuePreviousGame ? "" : "none"}` }} ><span>Continue Game </span></StyledMainMenuButton>
             <StyledMainMenuButton className="button" onClick={setupNewGame}><span>New Game </span></StyledMainMenuButton>
             <StyledMainMenuButton className="button" ><span>Settings</span> </StyledMainMenuButton>
-            <StyledMainMenuButton className="button" onClick={() => { "showHowToPlay" }}> <span>How To Play </span> </StyledMainMenuButton>
+            <StyledMainMenuButton className="button" onClick={showHowToPlay}> <span>How To Play </span> </StyledMainMenuButton>
         </MainMenuContainer>
     </div >
 };

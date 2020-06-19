@@ -12,7 +12,7 @@ import {
     SET_TUTORIAL_GAME_INDEX,
     CONTINUE_GAME
 } from './actions';
-import { EASY, MAIN_MENU, ALL_PAGES, HOW_TO_PLAY } from './Constants';
+import { EASY, MAIN_MENU, ALL_PAGES } from './Constants';
 import MinesweeperGame from './Minesweeper/Minesweeper';
 
 

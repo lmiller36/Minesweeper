@@ -5,9 +5,9 @@ const bombTile = {
     type: 'bomb',
 };
 
-const safeTile = {
-    type: 'safe',
-};
+// const safeTile = {
+//     type: 'safe',
+// };
 
 function isBomb(tile) {
     return tile.type === 'bomb';
@@ -26,7 +26,7 @@ class MinesweeperGame {
             }
 
             this.opened = new Set();
-
+            game.board.forEach(tile=>{if(tile.isOpened) this.opened.add(tile.index)})
             return;
         }
 
@@ -63,13 +63,13 @@ class MinesweeperGame {
             numSafe = 6;
         }
 
-        const randomSafe = genNonBombs(totalTiles - numSafe - numBombs, safeTile);
+        const randomSafe = genNonBombs(totalTiles - numSafe - numBombs);
         const randomizeBoard = shuffle(bombs.concat(randomSafe), RANDOM_SEED);
 
         const finishedBoard = [...Array(rows)].map(() => Array(cols).fill(0));
 
         this.iterateOverNeighbors(pos, (coords) => {
-            finishedBoard[coords.y][coords.x] = safeTile;
+            finishedBoard[coords.y][coords.x] = {};
         });
 
         let index = 0;
