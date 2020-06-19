@@ -2,7 +2,7 @@
 export const EASY = {
     rows: 9,
     cols: 9,
-    numBombs: 3,
+    numBombs: 10,
     key: "EASY"
 };
 
