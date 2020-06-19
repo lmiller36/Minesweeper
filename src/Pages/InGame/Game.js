@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable react/prop-types */
 
 import React from 'react';
@@ -23,8 +24,8 @@ let first = true;
 
 const GameWrapper = styled.div`
     display: inline-grid;
-    visibility: ${props => props.isPaused ? "hidden" : ""};
-    grid-template-columns: repeat(${props => props.gameDifficulty ? props.gameDifficulty.cols : 0},1fr);
+    visibility: ${(props) => props.isPaused ? 'hidden' : ''};
+    grid-template-columns: repeat(${(props) => props.gameDifficulty ? props.gameDifficulty.cols : 0},1fr);
 `;
 
 const Game = ({
@@ -37,7 +38,9 @@ const Game = ({
     if (first && isSet) {
         window.addEventListener('keydown', (event) => {
             if (event.key === 'F' || event.key === 'f') {
-                if (gameOver) return;
+                if (gameOver) {
+                    return;
+                }
                 toggleGameMode();
             }
         }, false);
@@ -57,7 +60,7 @@ const Game = ({
     const unopenedTileClick = (tile) => {
         game.clickTile(tile);
         updateBoard();
-    }
+    };
 
     const flagClick = (tile) => {
         game.flagTile(tile.index);
@@ -79,45 +82,47 @@ const Game = ({
 
     return <GameWrapper isPaused={isPaused} gameDifficulty={gameDifficulty}>
         {
-                game.board.map((tile) => {
-                    return <TileIcon
-                        key={tile.index}
-                        index={tile.index}
-                        gameMode={gameMode}
-                        click={
-                            (tile) => {
-                                if (gameOver) return;
-
-                                if (!isSet) {
-                                    initialTileClick(tile);
-                                    return;
-                                }
-
-                                if (isClicked(tile)) {
-                                    openNeighbors(tile);
-                                    return;
-                                }
-
-                                if (gameMode === 'flagging') {
-                                    flagClick(tile);
-                                    return;
-                                }
-
-                                if (tile.isFlagged) {
-                                    return;
-                                }
-                                if (tile.type === 'bomb') {
-                                    bombClick(tile);
-                                    return;
-                                }
-
-                                unopenedTileClick(tile);
+            game.board.map((tile) => {
+                return <TileIcon
+                    key={tile.index}
+                    index={tile.index}
+                    gameMode={gameMode}
+                    click={
+                        (tile) => {
+                            if (gameOver) {
+                                return;
                             }
+
+                            if (!isSet) {
+                                initialTileClick(tile);
+                                return;
+                            }
+
+                            if (isClicked(tile)) {
+                                openNeighbors(tile);
+                                return;
+                            }
+
+                            if (gameMode === 'flagging') {
+                                flagClick(tile);
+                                return;
+                            }
+
+                            if (tile.isFlagged) {
+                                return;
+                            }
+                            if (tile.type === 'bomb') {
+                                bombClick(tile);
+                                return;
+                            }
+
+                            unopenedTileClick(tile);
                         }
-                    />;
-                })
+                    }
+                />;
+            })
         }
-    </GameWrapper>
+    </GameWrapper>;
 };
 
 const mapStateToProps = (state) => ({

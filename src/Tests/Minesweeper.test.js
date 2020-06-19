@@ -29,8 +29,7 @@ it('always provides a safe tile for the first click', () => {
                 let row = Math.trunc((clickIndex - col) / difficulty.rows);
 
                 let click = { row: row, col: col};
-                // console.log(click);
-                // console.log(difficulty)
+
                 for (let i = -1; i <= 1; i++) {
                     for (let j = -1; j <= 1; j++) {
                         let newCoords = { row: click.row + i, col: click.col + j }

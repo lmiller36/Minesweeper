@@ -76,6 +76,7 @@ class MinesweeperGame {
 
             finishedBoard[row][col].setStatus(0);
             finishedBoard[row][col].setIndex(index2++);
+            finishedBoard[row][col].setCoords({ x: col, y: row })
 
         });
 
@@ -122,9 +123,8 @@ class MinesweeperGame {
 
     neighborsWithFlags(tile) {
         let numFlagged = 0;
-        iterateOverNeighbors(indexToPos(tile.index, this.difficulty), this.difficulty, (coords) => {
-            const index = posToArrIndex(coords, this.difficulty);
-            if (this.isFlagged(index)) {
+        iterateOverNeighbors(tile.coords, this.difficulty, (coords, index) => {
+            if (this.board[index].isFlagged) {
                 numFlagged++;
             }
         });
@@ -134,13 +134,10 @@ class MinesweeperGame {
 
     openNeighbors(tileToOpen) {
         const numFlagged = this.neighborsWithFlags(tileToOpen);
-        const pos = this.indexToPos(tileToOpen.index, this.difficulty);
-
+        const pos = tileToOpen.coords;
         if (numFlagged === tileToOpen.numBombs) {
-
-            iterateOverNeighbors(pos, this.difficulty, (coords) => {
-                const index = posToArrIndex(coords, this.difficulty);
-
+            iterateOverNeighbors(pos, this.difficulty, (coords, index) => {
+                // let index = posToArrIndex(coords, this.difficulty);
                 if (this.indexWithinBounds(index)) {
                     const tile = this.board[index];
                     if (this.isFlagged(index)) {
@@ -190,7 +187,7 @@ class MinesweeperGame {
             this.lose();
             return;
         }
-        const pos = indexToPos(tileToOpen.index, this.difficulty);
+        const pos = tileToOpen.coords
         if (tileToOpen.isOpened) {
             return;
         }
@@ -203,8 +200,8 @@ class MinesweeperGame {
             return;
         }
 
-        iterateOverNeighbors(pos, this.difficulty, (coords) => {
-            const tileToOpen = this.board[posToArrIndex(coords, this.difficulty)];
+        iterateOverNeighbors(pos, this.difficulty, (coords, index) => {
+            const tileToOpen = this.board[index];
             if (tileToOpen.isBomb) {
                 return;
             }
@@ -244,7 +241,10 @@ function iterateOverNeighbors(pos, difficulty, callback) {
             if (coords.y < 0 || coords.y >= difficulty.rows) {
                 continue;
             }
-            callback(coords);
+
+            let index = posToArrIndex(coords, difficulty);
+
+            callback(coords, index);
         }
     }
 }

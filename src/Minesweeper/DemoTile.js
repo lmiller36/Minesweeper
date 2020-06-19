@@ -16,8 +16,12 @@ const TileWrapper = styled.div`
 
 const DemoTile = ({ tile, showFlag }) => {
 
+
+    const hasColor = { outline: `${tile.color} 3px solid`, zIndex: 2 };
+    const noColor = {}
+    // console.log(tile.color)
     return <TileWrapper
-        style={{ border: tile.color ? `${tile.color} 3px solid` : "" }}
+        style={tile.color ? hasColor : noColor}
     >
         <TileImage style={{ position: 'absolute' }} tile={tile} />
         <FontAwesomeIcon size='2x' style={{

@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+
 import {
     INITIALIZE_BOARD,
     REMOVE_CACHED_BOARD,
@@ -12,10 +14,8 @@ import {
     SET_TUTORIAL_GAME_INDEX,
     CONTINUE_GAME
 } from './actions';
-import { EASY, MAIN_MENU, ALL_PAGES } from './Constants';
+import { EASY, MAIN_MENU, ALL_PAGES, HOW_TO_PLAY } from './Constants';
 import MinesweeperGame from './Minesweeper/Minesweeper';
-
-
 
 const initialState = {
     gameProps: {
@@ -38,9 +38,9 @@ export const data = (state = initialState, action) => {
 
     switch (type) {
         case PAGE_LOADED_SETUP: {
-            ALL_PAGES.forEach(page => {
+            ALL_PAGES.forEach((page) => {
                 state.pages[page] = false;
-            })
+            });
             state.pages[MAIN_MENU] = true;
 
             return {
@@ -49,9 +49,8 @@ export const data = (state = initialState, action) => {
                     ...state.gameProps,
                     gameMode: 'clicking',
                     isPaused: false,
-                    // game: null
                 },
-            }
+            };
         }
 
         case INITIALIZE_BOARD: {
@@ -76,7 +75,6 @@ export const data = (state = initialState, action) => {
                 ...state,
                 gameProps: {
                     ...state.gameProps,
-                    // shouldRerender: state.gameProps.shouldRerender + 1,
                 }
             };
         }
@@ -101,7 +99,7 @@ export const data = (state = initialState, action) => {
                     ...state.gameProps,
                     isPaused: !state.gameProps.isPaused,
                 }
-            }
+            };
         }
 
         case REMOVE_CACHED_BOARD: {
@@ -157,12 +155,12 @@ export const data = (state = initialState, action) => {
             const { PAGE } = payload;
 
             ALL_PAGES.forEach((page) => {
-                state["pages"][page] = page === PAGE;
+                state['pages'][page] = page === PAGE;
             });
 
             return {
                 ...state,
-            }
+            };
         }
 
         case END_GAME: {
@@ -184,7 +182,7 @@ export const data = (state = initialState, action) => {
                 tutorialPage: {
                     gameIndex: index,
                 }
-            }
+            };
         }
 
         case CONTINUE_GAME: {
@@ -196,7 +194,7 @@ export const data = (state = initialState, action) => {
                     ...state.gameProps,
                     game: game,
                 }
-            }
+            };
         }
 
         default: {

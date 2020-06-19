@@ -9,12 +9,16 @@ class Tile {
         this.index = index;
         this.isOpened = false;
         this.numBombs = 0;
+        this.isFlagged = false;
     }
     setStatus(status) {
         this.status = status;
     }
     setIndex(index) {
         this.index = index;
+    }
+    setCoords(coords){
+        this.coords = coords;
     }
     incStatus() {
         this.status++;
