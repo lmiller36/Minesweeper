@@ -9,7 +9,8 @@ import {
     SWITCH_PAGES,
     TOGGLE_PAUSE_GAME,
     END_GAME,
-    SET_TUTORIAL_GAME_INDEX
+    SET_TUTORIAL_GAME_INDEX,
+    CONTINUE_GAME
 } from './actions';
 import { EASY, MAIN_MENU, ALL_PAGES, HOW_TO_PLAY } from './Constants';
 import MinesweeperGame from './Minesweeper/Minesweeper';
@@ -74,7 +75,7 @@ export const data = (state = initialState, action) => {
                 ...state,
                 gameProps: {
                     ...state.gameProps,
-                    shouldRerender: state.gameProps.shouldRerender + 1,
+                    // shouldRerender: state.gameProps.shouldRerender + 1,
                 }
             };
         }
@@ -181,6 +182,18 @@ export const data = (state = initialState, action) => {
                 ...state,
                 tutorialPage: {
                     gameIndex: index,
+                }
+            }
+        }
+
+        case CONTINUE_GAME: {
+
+            const game = new MinesweeperGame(state.gameProps.difficulty, null, null, state.gameProps.game);
+            return {
+                ...state,
+                gameProps: {
+                    ...state.gameProps,
+                    game: game,
                 }
             }
         }

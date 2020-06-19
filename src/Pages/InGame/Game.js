@@ -87,7 +87,6 @@ const Game = ({
                         key={tile.index}
                         index={tile.index}
                         gameMode={gameMode}
-
                         click={
                             (tile) => {
                                 if (gameOver) return;
@@ -128,7 +127,7 @@ const mapStateToProps = (state) => ({
     board: getBoard(state),
     isSet: getIsSet(state),
     game: getGame(state),
-    // rerender: plsRerender(state),
+    rerender: plsRerender(state),
     gameMode: getGameMode(state),
     gameDifficulty: getGameDifficulty(state),
     isPaused: isPaused(state),

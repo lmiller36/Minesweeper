@@ -14,7 +14,22 @@ function isBomb(tile) {
 }
 
 class MinesweeperGame {
-    constructor(gameDifficulty, initialClick, RANDOM_SEED) {
+    constructor(gameDifficulty, initialClick, RANDOM_SEED, game) {
+
+        if (game != null) {
+
+            let keys = Object.keys(game);
+
+            for (let index in keys) {
+                let key = keys[index];
+                this[key] = game[key];
+            }
+
+            this.opened = new Set();
+
+            return;
+        }
+
         const { rows, cols, numBombs } = gameDifficulty;
         this.rows = rows;
         this.cols = cols;
@@ -24,6 +39,7 @@ class MinesweeperGame {
         this.opened = new Set();
         this.gameOver = false;
         this.didWin = false;
+
         if (this.bombs === 0) {
             this.board = genNonBombs(rows * cols);
         } else {
@@ -263,7 +279,6 @@ class MinesweeperGame {
             this.openNonBombNeighbors(tileToOpen);
         });
     }
-
 }
 
 function genNonBombs(numTiles, includeIndex, toInsert) {
@@ -279,6 +294,8 @@ function genNonBombs(numTiles, includeIndex, toInsert) {
 
     return tiles;
 }
+
+
 
 function genBombs(numBombs) {
     const bombs = [];

@@ -55,6 +55,12 @@ export const startGame = (difficulty) => ({
     payload: { difficulty },
 });
 
+export const CONTINUE_GAME = 'CONTINUE_GAME';
+export const continueGame = () => ({
+    type: CONTINUE_GAME,
+    payload: {  },
+});
+
 export const SWITCH_PAGES = 'SWITCH_PAGES';
 export const switchPages = (PAGE) => ({
     type: SWITCH_PAGES,
