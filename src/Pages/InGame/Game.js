@@ -62,7 +62,7 @@ const Game = ({
     }
 
     const flagClick = (tile) => {
-        game.flagTile(tile);
+        game.flagTile(tile.index);
         updateBoard();
     };
 

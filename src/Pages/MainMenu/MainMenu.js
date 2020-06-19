@@ -7,7 +7,7 @@ import {
     gameOver,
 } from '../../selectors';
 import { switchPages } from '../../actions';
-import { MAIN_MENU, IN_GAME, SETUP_NEW_GAME } from '../../Constants';
+import { MAIN_MENU, IN_GAME, SETUP_NEW_GAME, HOW_TO_PLAY } from '../../Constants';
 import './Buttons.css'
 
 const MainMenuContainer = styled.div`
@@ -18,24 +18,17 @@ const StyledMainMenuButton = styled.div`
 `;
 
 
-const MainMenu = ({ continuePreviousGame, inSetupMode, setupNewGame, inMainMenu, continueGame }) => {
+const MainMenu = ({ continuePreviousGame, inSetupMode, setupNewGame, inMainMenu, continueGame, showHowToPlay }) => {
 
     return <div style={{ display: inMainMenu ? "" : "none", marginTop: "20px" }}>
 
         <MainMenuContainer inSetupMode={inSetupMode}>
-            <StyledMainMenuButton className="button" style={{ display: `${continuePreviousGame ? "" : "none"}` }} onClick={() => {
-                continueGame();
-            }}><span>Continue Game </span></StyledMainMenuButton>
-
-            <StyledMainMenuButton className="button" onClick={() => {
-                setupNewGame();
-
-            }}><span>New Game </span></StyledMainMenuButton>
-
+            <StyledMainMenuButton className="button" onClick={continueGame} style={{ display: `${continuePreviousGame ? "" : "none"}` }} ><span>Continue Game </span></StyledMainMenuButton>
+            <StyledMainMenuButton className="button" onClick={setupNewGame}><span>New Game </span></StyledMainMenuButton>
             <StyledMainMenuButton className="button" ><span>Settings</span> </StyledMainMenuButton>
-            <StyledMainMenuButton className="button" ><span>How To Play </span> </StyledMainMenuButton>
+            <StyledMainMenuButton className="button" onClick={() => {"showHowToPlay"}}> <span>How To Play </span> </StyledMainMenuButton>
         </MainMenuContainer>
-    </div>
+    </div >
 };
 
 const mapStateToProps = (state) => ({
@@ -47,6 +40,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     setupNewGame: () => dispatch(switchPages(SETUP_NEW_GAME)),
     continueGame: () => dispatch(switchPages(IN_GAME)),
+    showHowToPlay: () => dispatch(switchPages(HOW_TO_PLAY)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainMenu);

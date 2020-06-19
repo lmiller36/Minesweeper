@@ -61,3 +61,10 @@ export const switchPages = (PAGE) => ({
     payload: { PAGE },
 });
 
+export const SET_TUTORIAL_GAME_INDEX = 'SET_TUTORIAL_GAME_INDEX';
+export const setTutorialGameIndex = (index) => ({
+    type: SET_TUTORIAL_GAME_INDEX,
+    payload: { index },
+});
+
+

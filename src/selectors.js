@@ -64,5 +64,9 @@ export const changed = (state, ownProps) => {
 }
 
 export const getTile = (state, ownProps) => {
-    return  state.data.gameProps.game.board[ownProps.index];
+    return state.data.gameProps.game.board[ownProps.index];
+}
+
+export const getTutorialGameIndex = (state) => {
+    return state.data.tutorialPage.gameIndex;
 }

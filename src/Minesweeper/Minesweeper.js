@@ -14,7 +14,7 @@ function isBomb(tile) {
 }
 
 class MinesweeperGame {
-    constructor(gameDifficulty, initialClick) {
+    constructor(gameDifficulty, initialClick, RANDOM_SEED) {
         const { rows, cols, numBombs } = gameDifficulty;
         this.rows = rows;
         this.cols = cols;
@@ -27,12 +27,12 @@ class MinesweeperGame {
         if (this.bombs === 0) {
             this.board = genNonBombs(rows * cols);
         } else {
-            this.board = this.createBoard(gameDifficulty, initialClick);
+            this.board = this.createBoard(gameDifficulty, initialClick, RANDOM_SEED);
             this.clickTile(this.board[initialClick]);
         }
     }
 
-    createBoard(gameDifficulty, initialClick) {
+    createBoard(gameDifficulty, initialClick, RANDOM_SEED) {
         const { rows, cols, numBombs } = gameDifficulty;
 
         const pos = this.indexToPos(initialClick, cols);
@@ -48,7 +48,7 @@ class MinesweeperGame {
         }
 
         const randomSafe = genNonBombs(totalTiles - numSafe - numBombs, safeTile);
-        const randomizeBoard = shuffle(bombs.concat(randomSafe));
+        const randomizeBoard = shuffle(bombs.concat(randomSafe), RANDOM_SEED);
 
         const finishedBoard = [...Array(rows)].map(() => Array(cols).fill(0));
 
@@ -154,11 +154,11 @@ class MinesweeperGame {
         this.openNonBombNeighbors(tile);
     }
 
-    flagTile(tile) {
-        const curr = this.board[tile.index];
+    flagTile(tileIndex) {
+        const curr = this.board[tileIndex];
         const flaggedState = curr.isFlagged;
         curr.isFlagged = !flaggedState;
-        this.updateTileStatus(tile.index);
+        this.updateTileStatus(tileIndex);
     }
 
     indexWithinBounds(index) {
@@ -246,7 +246,7 @@ class MinesweeperGame {
             return;
         }
         this.board[tileToOpen.index].isOpened = true;
-    
+
 
         this.decrementUsed(tileToOpen.index);
 

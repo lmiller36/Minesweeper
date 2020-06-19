@@ -8,9 +8,10 @@ import {
     PAGE_LOADED_SETUP,
     SWITCH_PAGES,
     TOGGLE_PAUSE_GAME,
-    END_GAME
+    END_GAME,
+    SET_TUTORIAL_GAME_INDEX
 } from './actions';
-import { EASY, MAIN_MENU, ALL_PAGES } from './Constants';
+import { EASY, MAIN_MENU, ALL_PAGES, HOW_TO_PLAY } from './Constants';
 import MinesweeperGame from './Minesweeper/Minesweeper';
 
 
@@ -24,6 +25,9 @@ const initialState = {
         },
         timeElapsed: 0,
         isSet: false,
+    },
+    tutorialPage: {
+        gameIndex: 0,
     },
     pages: {}
 };
@@ -169,6 +173,16 @@ export const data = (state = initialState, action) => {
                     loss: !didWin,
                 }
             };
+        }
+
+        case SET_TUTORIAL_GAME_INDEX: {
+            const { index } = payload;
+            return {
+                ...state,
+                tutorialPage: {
+                    gameIndex: index,
+                }
+            }
         }
 
         default: {

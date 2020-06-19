@@ -16,9 +16,7 @@ const TileWrapper = styled.div`
     height: 50px;
 `;
 
-// let tileIndex = -1;
-
-const Tile = ({ tile, gameMode, click, index, changed }) => {
+const Tile = ({ tile, gameMode, click }) => {
 
     return <TileWrapper
         onClick={() => {

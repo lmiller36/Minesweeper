@@ -7,6 +7,7 @@ import Logo from './Logo';
 import MainMenu from './Pages/MainMenu/MainMenu';
 import GameSetup from './Pages/GameSetup/GameSetup';
 import GameDisplay from './Pages/InGame/GameDisplay';
+import HowToPlay from './Pages/HowToPlay/HowToPlay';
 
 const Pages = styled.div`
     text-align: center;
@@ -20,6 +21,7 @@ const App = ({ pageLoadedSetup }) => {
                 <MainMenu />
                 <GameSetup />
                 <GameDisplay />
+                <HowToPlay />
             </Pages>
 
 
