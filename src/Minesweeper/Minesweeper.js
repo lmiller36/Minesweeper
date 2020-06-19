@@ -1,21 +1,9 @@
 /* eslint-disable complexity */
 import { shuffle } from '../utils';
-
-const bombTile = {
-    type: 'bomb',
-};
-
-// const safeTile = {
-//     type: 'safe',
-// };
-
-function isBomb(tile) {
-    return tile.type === 'bomb';
-}
+import Tile from './Tile'
 
 class MinesweeperGame {
-    constructor(gameDifficulty, initialClick, RANDOM_SEED, game) {
-
+    constructor(gameDifficulty, initialClickIndex, RANDOM_SEED, game) {
         if (game != null) {
 
             let keys = Object.keys(game);
@@ -27,6 +15,11 @@ class MinesweeperGame {
 
             this.opened = new Set();
             game.board.forEach(tile => { if (tile.isOpened) this.opened.add(tile.index) })
+
+            this.board = game.board.map(tileDict => {
+                return new Tile(tileDict)
+            })
+
             return;
         }
 
@@ -44,15 +37,15 @@ class MinesweeperGame {
         if (this.bombs === 0) {
             this.board = genNonBombs(rows * cols);
         } else {
-            this.board = this.createBoard(gameDifficulty, initialClick, RANDOM_SEED);
-            this.clickTile(this.board[initialClick]);
+            this.board = this.createBoard(gameDifficulty, initialClickIndex, RANDOM_SEED);
+            this.clickTile(this.board[initialClickIndex]);
         }
     }
 
     createBoard(gameDifficulty, initialClick, RANDOM_SEED) {
         const { rows, cols, numBombs } = gameDifficulty;
 
-        const pos = this.indexToPos(initialClick, cols);
+        const pos = indexToPos(initialClick, this.difficulty);
         const totalTiles = rows * cols;
         const bombs = genBombs(numBombs);
 
@@ -70,22 +63,20 @@ class MinesweeperGame {
         const finishedBoard = [...Array(rows)].map(() => Array(cols).fill(0));
 
         iterateOverNeighbors(pos, this.difficulty, (coords) => {
-            finishedBoard[coords.y][coords.x] = {};
+            finishedBoard[coords.y][coords.x] = new Tile(null, false);
         });
 
         let index = 0;
-        iterateOverRowsCols(this.difficulty,(row, col) => {
+        let index2 = 0;
+        iterateOverRowsCols(this.difficulty, (row, col) => {
             if (!finishedBoard[row][col]) {
                 finishedBoard[row][col] = randomizeBoard[index];
                 index++;
             }
 
-            finishedBoard[row][col] = {
-                ...finishedBoard[row][col],
-                status: 0,
-                index: this.posToArrIndex({ x: col, y: row }, cols),
-                numBombs: 0,
-            };
+            finishedBoard[row][col].setStatus(0);
+            finishedBoard[row][col].setIndex(index2++);
+
         });
 
 
@@ -94,11 +85,12 @@ class MinesweeperGame {
         return [].concat(...finishedBoard);
     }
 
-    calculateBombNumberForEachTile(finishedBoard, rows, cols) {
-        iterateOverRowsCols(this.difficulty,(row, col) => {
-            if (!isBomb(finishedBoard[row][col])) {
+    calculateBombNumberForEachTile(finishedBoard) {
+        iterateOverRowsCols(this.difficulty, (row, col) => {
+            if (!finishedBoard[row][col].isBomb) {
                 return;
             }
+
             const pos = { x: col, y: row };
 
             iterateOverNeighbors(pos, this.difficulty, (coords) => {
@@ -106,19 +98,6 @@ class MinesweeperGame {
             });
 
         });
-    }
-
-
-    posToArrIndex(pos, cols) {
-        return pos.y * cols + pos.x;
-    }
-
-
-    indexToPos(index, cols) {
-        const y = Math.trunc(index / cols);
-        const x = index - y * cols;
-
-        return { x: x, y: y };
     }
 
     clickTile(tile) {
@@ -143,8 +122,8 @@ class MinesweeperGame {
 
     neighborsWithFlags(tile) {
         let numFlagged = 0;
-        iterateOverNeighbors(this.indexToPos(tile.index, this.cols), this.difficulty, (coords) => {
-            const index = this.posToArrIndex(coords, this.cols);
+        iterateOverNeighbors(indexToPos(tile.index, this.difficulty), this.difficulty, (coords) => {
+            const index = posToArrIndex(coords, this.difficulty);
             if (this.isFlagged(index)) {
                 numFlagged++;
             }
@@ -155,12 +134,12 @@ class MinesweeperGame {
 
     openNeighbors(tileToOpen) {
         const numFlagged = this.neighborsWithFlags(tileToOpen);
-        const pos = this.indexToPos(tileToOpen.index, this.cols);
+        const pos = this.indexToPos(tileToOpen.index, this.difficulty);
 
         if (numFlagged === tileToOpen.numBombs) {
 
-            iterateOverNeighbors(pos,this.difficulty, (coords) => {
-                const index = this.posToArrIndex(coords, this.cols);
+            iterateOverNeighbors(pos, this.difficulty, (coords) => {
+                const index = posToArrIndex(coords, this.difficulty);
 
                 if (this.indexWithinBounds(index)) {
                     const tile = this.board[index];
@@ -201,19 +180,17 @@ class MinesweeperGame {
     }
 
     updateTileStatus(index) {
-        var min = 1;
-        if (this.board[index].status) min = this.board[index].status;
-        this.board[index].status = min + 1;
+        this.board[index].incStatus();
     }
 
     openNonBombNeighbors(tileToOpen) {
         this.updateTileStatus(tileToOpen.index);
 
-        if (tileToOpen.type === 'bomb') {
+        if (tileToOpen.isBomb) {
             this.lose();
             return;
         }
-        const pos = this.indexToPos(tileToOpen.index, this.cols);
+        const pos = indexToPos(tileToOpen.index, this.difficulty);
         if (tileToOpen.isOpened) {
             return;
         }
@@ -226,9 +203,9 @@ class MinesweeperGame {
             return;
         }
 
-        iterateOverNeighbors(pos,this.difficulty, (coords) => {
-            const tileToOpen = this.board[this.posToArrIndex(coords, this.cols)];
-            if (isBomb(tileToOpen)) {
+        iterateOverNeighbors(pos, this.difficulty, (coords) => {
+            const tileToOpen = this.board[posToArrIndex(coords, this.difficulty)];
+            if (tileToOpen.isBomb) {
                 return;
             }
 
@@ -238,7 +215,7 @@ class MinesweeperGame {
 }
 
 
-function iterateOverRowsCols(gameDifficulty,callback) {
+function iterateOverRowsCols(gameDifficulty, callback) {
     for (let row = 0; row < gameDifficulty.rows; row++) {
         for (let col = 0; col < gameDifficulty.cols; col++) {
             callback(row, col);
@@ -246,15 +223,12 @@ function iterateOverRowsCols(gameDifficulty,callback) {
     }
 }
 
-function genNonBombs(numTiles, includeIndex, toInsert) {
+function genNonBombs(numTiles) {
     const tiles = [];
 
 
     for (let count = 0; count < numTiles; count++) {
-        tiles.push({
-            ...toInsert,
-            index: count,
-        });
+        tiles.push(new Tile(null, false, count));
     }
 
     return tiles;
@@ -274,6 +248,19 @@ function iterateOverNeighbors(pos, difficulty, callback) {
         }
     }
 }
+
+function posToArrIndex(pos, difficulty) {
+    return pos.y * difficulty.cols + pos.x;
+}
+
+
+function indexToPos(index, difficulty) {
+    const y = Math.trunc(index / difficulty.cols);
+    const x = index - y * difficulty.cols;
+
+    return { x: x, y: y };
+}
+
 
 function isCorner(pos, gameDifficulty) {
     return numEdgesOfPos(pos, gameDifficulty) === 2;
@@ -300,7 +287,7 @@ function genBombs(numBombs) {
     const bombs = [];
 
     for (let count = 0; count < numBombs; count++) {
-        bombs.push(bombTile);
+        bombs.push(new Tile(null, true));
     }
 
     return bombs;

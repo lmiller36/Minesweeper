@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react';
-import Tile from '../../Minesweeper/Tile';
+import TileIcon from '../../Minesweeper/TileIcon';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import {
@@ -18,8 +18,6 @@ import { initializeBoard, updateBoard, removeCachedBoard, toggleGameMode, startG
 
 import MinesweeperGame from '../..//Minesweeper/Minesweeper';
 import { IN_GAME } from '../../Constants';
-
-let emptyBoard = null;
 
 let first = true;
 
@@ -81,9 +79,8 @@ const Game = ({
 
     return <GameWrapper isPaused={isPaused} gameDifficulty={gameDifficulty}>
         {
-            game.board.length === 0 ? <div></div> :
                 game.board.map((tile) => {
-                    return <Tile
+                    return <TileIcon
                         key={tile.index}
                         index={tile.index}
                         gameMode={gameMode}

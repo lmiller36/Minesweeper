@@ -132,7 +132,6 @@ const showBoard = (board) => {
                         key={tile.index + "_empty"}
                         index={tile.index}
                         tile={tile}
-                        // color={tile.color}
                     />;
                 })
             }
@@ -141,8 +140,7 @@ const showBoard = (board) => {
 }
 
 const HowToPlay = ({ inHowToPlay, tutorialGameIndex, setTutorialGameIndex }) => {
-
-    const TypesOfTiles = [];
+    const TypesOfTiles = [];    
     TypesOfTiles.push({ tile: <DemoTile tile={{ isOpened: false }} />, msg: "Unopened" });
     for (let i = 0; i <= 8; i++) {
         TypesOfTiles.push({ tile: <DemoTile tile={{ isOpened: true, numBombs: i }} />, msg: `${i} bombs` });
@@ -185,7 +183,7 @@ const HowToPlay = ({ inHowToPlay, tutorialGameIndex, setTutorialGameIndex }) => 
         }
         <p>{demoBoardMessages[tutorialGameIndex]}</p>
         {/* {
-            return         <p>hi</p>
+            // return         <p>hi</p>
 
             demoBoardMessages[tutorialGameIndex]
         } */}

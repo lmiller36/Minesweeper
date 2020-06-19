@@ -49,6 +49,7 @@ export const data = (state = initialState, action) => {
                     ...state.gameProps,
                     gameMode: 'clicking',
                     isPaused: false,
+                    // game: null
                 },
             }
         }

@@ -24,7 +24,7 @@ function TileImageFactory() {
     this.createImage = function (tile) {
         let image;
 
-        if (tile.isOpened && tile.type === 'bomb') {
+        if (tile.isOpened && tile.isBomb) {
             image = new BombImage();
         } else if (tile.isOpened) {
             image = new OpenedImage(tile.numBombs);
