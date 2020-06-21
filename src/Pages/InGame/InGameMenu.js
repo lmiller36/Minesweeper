@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable react/prop-types */
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
@@ -19,7 +21,7 @@ import {
     switchPages,
     togglePauseGame,
 
-} from '../../actions'
+} from '../../actions';
 import Timer from './Timer';
 import { MAIN_MENU, IN_GAME, IN_GAME_FIRST_CLICK } from '../../Constants';
 
@@ -30,18 +32,25 @@ const InGameMenuWrapper = styled.div`
 `;
 
 const InGameMenu = ({
-    gameMode, isPaused, gameDifficulty, toggleGameMode, inGameFirstClick, localRemoveCachedBoard, startGame, mainMenu, remainingBombs, toggledPause, inGame, gameOver
+    gameMode, isPaused, gameDifficulty, toggleGameMode, inGameFirstClick,
+    localRemoveCachedBoard, startGame, mainMenu, remainingBombs,
+    toggledPause, inGame, gameOver
 }) => {
 
     return <InGameMenuWrapper>
-        <FontAwesomeIcon size='2x' icon={faHome} onClick={() => { mainMenu() }} />
+        <FontAwesomeIcon
+            size='2x'
+            icon={faHome}
+            onClick={() => {
+                mainMenu();
+            }} />
         <Timer />
         <div>{remainingBombs}</div>
 
         <FontAwesomeIcon
             size='2x'
-            style={{ display: `${!gameOver ? "" : "none"}` }}
-            icon={gameMode === 'flagging' ? faFlag : faMousePointer}
+            style={{ display: `${!gameOver ? '' : 'none'}` }}
+            icon={gameMode.flagging ? faFlag : faMousePointer}
             onClick={
                 () => {
                     toggleGameMode();
@@ -49,7 +58,14 @@ const InGameMenu = ({
             }
         />
 
-        <FontAwesomeIcon style={{ display: `${inGame && !gameOver ? "" : "none"}` }} size='2x' icon={isPaused ? faPlay : faPause} onClick={toggledPause} />
+        <FontAwesomeIcon
+            style={{
+                display: `${inGame && !gameOver ? '' : 'none'}`
+            }}
+            size='2x'
+            icon={isPaused ? faPlay : faPause}
+            onClick={toggledPause}
+        />
 
         <FontAwesomeIcon size='2x' icon={faRedo} onClick={() => {
             localRemoveCachedBoard();

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable func-style */
 /* eslint-disable no-magic-numbers */
 /* eslint-disable complexity */
@@ -16,10 +17,8 @@ const TileWrapper = styled.div`
 
 const DemoTile = ({ tile, showFlag }) => {
 
-
     const hasColor = { outline: `${tile.color} 3px solid`, zIndex: 2 };
-    const noColor = {}
-    // console.log(tile.color)
+    const noColor = {};
     return <TileWrapper
         style={tile.color ? hasColor : noColor}
     >

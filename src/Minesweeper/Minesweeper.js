@@ -1,29 +1,41 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable complexity */
 import { shuffle } from '../utils';
-import Tile from './Tile'
+import Tile from './Tile';
+
+const SAFE_TILES_CORNER = 4;
+const SAFE_TILES_EDGE = 6;
+const TWO_EDGES = 2;
+
 
 class MinesweeperGame {
-    constructor(gameDifficulty, initialClickIndex, RANDOM_SEED, game) {
-        if (game != null) {
+    constructor(oldGameProps, newGameProps) {
+        if (oldGameProps) {
 
-            let keys = Object.keys(game);
+            const keys = Object.keys(oldGameProps);
 
-            for (let index in keys) {
-                let key = keys[index];
-                this[key] = game[key];
+            for (const index in keys) {
+                const key = keys[index];
+                this[key] = oldGameProps[key];
             }
 
             this.opened = new Set();
-            game.board.forEach(tile => { if (tile.isOpened) this.opened.add(tile.index) })
+            oldGameProps.board.forEach((tile) => {
+                if (tile.isOpened) {
+                    this.opened.add(tile.index);
+                }
+            });
 
-            this.board = game.board.map(tileDict => {
-                return new Tile(tileDict)
-            })
+            this.board = oldGameProps.board.map((tileDict) => {
+                return new Tile(tileDict);
+            });
 
             return;
         }
 
+        const { gameDifficulty, initialClickIndex, RANDOM_SEED } = newGameProps;
         const { rows, cols, numBombs } = gameDifficulty;
+
         this.rows = rows;
         this.cols = cols;
         this.bombs = numBombs;
@@ -44,7 +56,6 @@ class MinesweeperGame {
 
     createBoard(gameDifficulty, initialClick, RANDOM_SEED) {
         const { rows, cols, numBombs } = gameDifficulty;
-
         const pos = indexToPos(initialClick, this.difficulty);
         const totalTiles = rows * cols;
         const bombs = genBombs(numBombs);
@@ -52,9 +63,9 @@ class MinesweeperGame {
         let numSafe = 9;
 
         if (isCorner(pos, this.difficulty)) {
-            numSafe = 4;
+            numSafe = SAFE_TILES_CORNER;
         } else if (isOnAnEdge(pos, this.difficulty)) {
-            numSafe = 6;
+            numSafe = SAFE_TILES_EDGE;
         }
 
         const randomSafe = genNonBombs(totalTiles - numSafe - numBombs);
@@ -63,7 +74,7 @@ class MinesweeperGame {
         const finishedBoard = [...Array(rows)].map(() => Array(cols).fill(0));
 
         iterateOverNeighbors(pos, this.difficulty, (coords) => {
-            finishedBoard[coords.y][coords.x] = new Tile(null, false);
+            finishedBoard[coords.row][coords.col] = new Tile(null, false);
         });
 
         let index = 0;
@@ -76,7 +87,7 @@ class MinesweeperGame {
 
             finishedBoard[row][col].setStatus(0);
             finishedBoard[row][col].setIndex(index2++);
-            finishedBoard[row][col].setCoords({ x: col, y: row })
+            finishedBoard[row][col].setCoords({ col: col, row: row });
 
         });
 
@@ -92,10 +103,10 @@ class MinesweeperGame {
                 return;
             }
 
-            const pos = { x: col, y: row };
+            const pos = { col: col, row: row };
 
             iterateOverNeighbors(pos, this.difficulty, (coords) => {
-                finishedBoard[coords.y][coords.x].numBombs += 1;
+                finishedBoard[coords.row][coords.col].numBombs += 1;
             });
 
         });
@@ -106,12 +117,12 @@ class MinesweeperGame {
         this.openNonBombNeighbors(tile);
     }
 
-    flagTile(tileIndex) {
-        const curr = this.board[tileIndex];
-        const flaggedState = curr.isFlagged;
-        curr.isFlagged = !flaggedState;
-        this.updateTileStatus(tileIndex);
-    }
+    // flagTile(tileIndex) {
+    //     const curr = this.board[tileIndex];
+    //     const flaggedState = curr.isFlagged;
+    //     curr.isFlagged = !flaggedState;
+    //     this.updateTileStatus(tileIndex);
+    // }
 
     indexWithinBounds(index) {
         return index >= 0 && index < this.rows * this.cols;
@@ -159,7 +170,6 @@ class MinesweeperGame {
         this.opened.add(index);
         if (this.opened.size === this.nonBombs) {
             this.win();
-            return;
         }
     }
 
@@ -187,7 +197,7 @@ class MinesweeperGame {
             this.lose();
             return;
         }
-        const pos = tileToOpen.coords
+        const pos = tileToOpen.coords;
         if (tileToOpen.isOpened) {
             return;
         }
@@ -234,47 +244,49 @@ function genNonBombs(numTiles) {
 function iterateOverNeighbors(pos, difficulty, callback) {
     for (let xDelta = -1; xDelta <= 1; xDelta++) {
         for (let yDelta = -1; yDelta <= 1; yDelta++) {
-            const coords = { x: pos.x + xDelta, y: pos.y + yDelta };
-            if (coords.x < 0 || coords.x >= difficulty.cols) {
+            const coords = { col: pos.col + xDelta, row: pos.row + yDelta };
+            if (coords.col < 0 || coords.col >= difficulty.cols) {
                 continue;
             }
-            if (coords.y < 0 || coords.y >= difficulty.rows) {
+            if (coords.row < 0 || coords.row >= difficulty.rows) {
                 continue;
             }
 
-            let index = posToArrIndex(coords, difficulty);
-
-            callback(coords, index);
+            callback(coords, posToArrIndex(coords, difficulty));
         }
     }
 }
 
 function posToArrIndex(pos, difficulty) {
-    return pos.y * difficulty.cols + pos.x;
+    return (pos.row * difficulty.cols) + pos.col;
 }
 
 
 function indexToPos(index, difficulty) {
-    const y = Math.trunc(index / difficulty.cols);
-    const x = index - y * difficulty.cols;
+    const row = Math.trunc(index / difficulty.cols);
+    const col = index - (row * difficulty.cols);
 
-    return { x: x, y: y };
+    return { col: col, row: row };
 }
 
 
 function isCorner(pos, gameDifficulty) {
-    return numEdgesOfPos(pos, gameDifficulty) === 2;
+    return numEdgesOfPos(pos, gameDifficulty) === TWO_EDGES;
 }
 
 function numEdgesOfPos(pos, gameDifficulty) {
-    const left = pos.y === 0;
-    const right = pos.y === gameDifficulty.cols - 1;
-    const top = pos.x === 0;
-    const bottom = pos.x === gameDifficulty.rows - 1;
+    const left = pos.row === 0;
+    const right = pos.row === gameDifficulty.rows - 1;
+    const top = pos.col === 0;
+    const bottom = pos.col === gameDifficulty.cols - 1;
 
     let total = 0;
-    if (left || right) total++;
-    if (top || bottom) total++;
+    if (left || right) {
+        total++;
+    }
+    if (top || bottom) {
+        total++;
+    }
 
     return total;
 }

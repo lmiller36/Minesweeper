@@ -1,3 +1,6 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable brace-style */
+/* eslint-disable no-magic-numbers */
 /* eslint-disable complexity */
 import React from 'react';
 import { connect } from 'react-redux';
@@ -24,41 +27,43 @@ const DemoBoard = styled.div`
     grid-template-columns: repeat(${EASY.cols},1fr);
 `;
 
-const emptyBoard = new MinesweeperGame({
-    ...EASY,
-    numBombs: 0,
+const emptyBoard = new MinesweeperGame(null, {
+    gameDifficulty: {
+        ...EASY,
+        numBombs: 0,
+    }
 }, null).board;
 
 const moves = [
-    (game) => { game.flagTile(5) },
-    (game) => { game.flagTile(41) },
-    (game) => { game.clickTile(game.board[50]) },
-    (game) => { game.openNeighbors(game.board[50]) },
-    (game) => { game.flagTile(22) },
-    (game) => { game.flagTile(31) },
-    (game) => { game.flagTile(61) },
-    (game) => { game.openNeighbors(game.board[14]) },
-    (game) => { game.openNeighbors(game.board[23]) },
-    (game) => { game.openNeighbors(game.board[53]) },
-    (game) => { game.openNeighbors(game.board[62]) },
-    (game) => { game.openNeighbors(game.board[70]) },
-    (game) => { game.flagTile(68) },
-    (game) => { game.openNeighbors(game.board[59]) },
-    (game) => { game.openNeighbors(game.board[77]) },
-    (game) => { game.clickTile(game.board[21]) },
-    (game) => { game.clickTile(game.board[57]) },
-    (game) => { game.clickTile(game.board[30]) },
-    (game) => { game.openNeighbors(game.board[30]) },
-    (game) => { game.flagTile(12) },
-    (game) => { game.flagTile(48) },
-    (game) => { game.openNeighbors(game.board[11]) },
-    (game) => { game.openNeighbors(game.board[47]) },
-    (game) => { game.openNeighbors(game.board[57]) },
-    (game) => { game.openNeighbors(game.board[56]) },
-    (game) => { game.flagTile(54) },
-    (game) => { game.flagTile(75) },
-    (game) => { game.openNeighbors(game.board[64]) },
-    (game) => { game.openNeighbors(game.board[65]) },
+    (game) => { game.board[5].flagTile(); },
+    (game) => { game.board[41].flagTile(); },
+    (game) => { game.clickTile(game.board[50]); },
+    (game) => { game.openNeighbors(game.board[50]); },
+    (game) => { game.board[22].flagTile(); },
+    (game) => { game.board[31].flagTile(); },
+    (game) => { game.board[61].flagTile(); },
+    (game) => { game.openNeighbors(game.board[14]); },
+    (game) => { game.openNeighbors(game.board[23]); },
+    (game) => { game.openNeighbors(game.board[53]); },
+    (game) => { game.openNeighbors(game.board[62]); },
+    (game) => { game.openNeighbors(game.board[70]); },
+    (game) => { game.board[68].flagTile(); },
+    (game) => { game.openNeighbors(game.board[59]); },
+    (game) => { game.openNeighbors(game.board[77]); },
+    (game) => { game.clickTile(game.board[21]); },
+    (game) => { game.clickTile(game.board[57]); },
+    (game) => { game.clickTile(game.board[30]); },
+    (game) => { game.openNeighbors(game.board[30]); },
+    (game) => { game.board[12].flagTile(); },
+    (game) => { game.board[48].flagTile(); },
+    (game) => { game.openNeighbors(game.board[11]); },
+    (game) => { game.openNeighbors(game.board[47]); },
+    (game) => { game.openNeighbors(game.board[57]); },
+    (game) => { game.openNeighbors(game.board[56]); },
+    (game) => { game.board[54].flagTile(); },
+    (game) => { game.board[75].flagTile(); },
+    (game) => { game.openNeighbors(game.board[64]); },
+    (game) => { game.openNeighbors(game.board[65]); },
 ];
 
 
@@ -96,30 +101,35 @@ const movesForEachDemoBoard = [
 
 const SEED = 123123;
 emptyBoard[25].color = 'blue';
-let boards = [emptyBoard];
+const boards = [emptyBoard];
 
 movesForEachDemoBoard.map((boardInfo) => {
-    let game = new MinesweeperGame(EASY, 25, SEED);
-    let moveCount = boardInfo.moves;
-    let tilesToHighlight = boardInfo.tilesToHighlight;
+    const game = new MinesweeperGame(null, {
+        gameDifficulty: EASY,
+        initialClickIndex: 25,
+        RANDOM_SEED: SEED
+    });
+    const moveCount = boardInfo.moves;
+    const tilesToHighlight = boardInfo.tilesToHighlight;
 
-    for (let i = 0; i < moveCount; i++) {
-        moves[i](game);
+    for (let moveIndex = 0; moveIndex < moveCount; moveIndex++) {
+        moves[moveIndex](game);
     }
 
 
-    let board = game.board;
+    const board = game.board;
 
     if (tilesToHighlight) {
-        tilesToHighlight.forEach(tileToHighlight => {
+        tilesToHighlight.forEach((tileToHighlight) => {
             board[tileToHighlight.index].color = tileToHighlight.color;
-        })
+        });
     }
 
-    boards.push(board)
-})
+    boards.push(board);
+});
 
-let demoBoardMessages = [
+
+const demoBoardMessages = [
     'The first click on the board is always safe, so you can click any of the empty tiles to start. To get a maximum amount of open tiles, a non-edge tile is recommended. We chose to click the highlighted tile',
     'After the first click, a board may look like this, Certain tiles on this board can already be determined to be bombs. Can you see which?',
     'Since the tiles with a one inside are next to only 1 non-opened tiles, the unopened tile MUST be a bomb. As such they are flagged',
@@ -150,27 +160,24 @@ let demoBoardMessages = [
     'd',
     'e',
     'f'
-]
+];
 
 const showBoard = (board) => {
     return (
         <DemoBoard>
             {
-
-                board.map((tile) => {
-                    return <DemoTile
-                        key={tile.index + '_empty'}
-                        index={tile.index}
-                        tile={tile}
-                    />;
-                })
+                !board ? <div></div> :
+                    board.map((tile) => {
+                        return <DemoTile
+                            key={`${tile.index}_empty`}
+                            index={tile.index}
+                            tile={tile}
+                        />;
+                    })
             }
         </DemoBoard>
     );
-}
-
-// console.log(demoBoardMessages.length);
-// console.log(movesForEachDemoBoard.length)
+};
 
 const HowToPlay = ({ inHowToPlay, tutorialGameIndex, setTutorialGameIndex }) => {
     const TypesOfTiles = [];
@@ -180,22 +187,10 @@ const HowToPlay = ({ inHowToPlay, tutorialGameIndex, setTutorialGameIndex }) => 
         TypesOfTiles.push({ tile: <DemoTile tile={{ isOpened: true, numBombs: hintTileIndex }} />, msg: `${hintTileIndex} bombs` });
     }
 
-    TypesOfTiles.push({ tile: <DemoTile tile={{ isOpened: true, type: 'bomb' }} />, msg: 'Bomb tile' });
-    // var c = document.getElementById('myCanvas');
-    // let Canvas = <Canvas></Canvas>
-    // if (c) {
-    //     var ctx = c.getContext('2d');
-    //     ctx.beginPath();
-    //     ctx.moveTo(0, 0);
-    //     ctx.lineTo(300, 150);
-    //     ctx.stroke();
-    // }
+    TypesOfTiles.push({ tile: <DemoTile tile={{ isOpened: true, isBomb: true }} />, msg: 'Bomb tile' });
 
-    // if (document.getElementById('HowTo_Step2')) {
-    //     console.log(document.getElementById('HowTo_Step2').getBoundingClientRect())
-    //     Canvas = <canvas id='myCanvas' width='450' height='450' style={{ border: '1px solid #d3d3d3', position: 'absolute' }}>
-    //         Your browser does not support the HTML5 canvas tag.</canvas>
-    // }
+    TypesOfTiles.push({ tile: <DemoTile tile={{ isOpened: false, isFlagged: true }} />, msg: 'Flagged tile' });
+
 
     return <div style={{ display: inHowToPlay ? 'inline-block' : 'none', width: '1000px' }}>
         <h1>How To Play Minesweeper(IN PROGRESS OF BEING BUILT)</h1>
@@ -205,8 +200,8 @@ const HowToPlay = ({ inHowToPlay, tutorialGameIndex, setTutorialGameIndex }) => 
             {
                 Object.keys(DIFFICULTIES).map((key) => {
                     const difficulty = DIFFICULTIES[key];
-                    const msg = `${capitalize(key)} (${difficulty.rows} x ${difficulty.cols}, ${difficulty.numBombs} mines)`
-                    return <li key={key} className='container'>{msg} </li>
+                    const msg = `${capitalize(key)} (${difficulty.rows} x ${difficulty.cols}, ${difficulty.numBombs} mines)`;
+                    return <li key={key} className='container'>{msg} </li>;
                 })
             }
         </ul>
@@ -237,7 +232,7 @@ const HowToPlay = ({ inHowToPlay, tutorialGameIndex, setTutorialGameIndex }) => 
                 icon={faArrowCircleLeft}
                 size='2x'
                 onClick={() => {
-                    setTutorialGameIndex(tutorialGameIndex - 1)
+                    setTutorialGameIndex(tutorialGameIndex - 1);
                 }}
                 style={{ display: `${!tutorialGameIndex ? 'none' : ''}` }}
             />
@@ -245,7 +240,7 @@ const HowToPlay = ({ inHowToPlay, tutorialGameIndex, setTutorialGameIndex }) => 
                 icon={faArrowCircleRight}
                 size='2x'
                 onClick={() => {
-                    setTutorialGameIndex(tutorialGameIndex + 1)
+                    setTutorialGameIndex(tutorialGameIndex + 1);
                 }}
                 style={{
                     display: `${tutorialGameIndex === boards.length - 1 ? 'none' : ''}`

@@ -1,10 +1,10 @@
 export const getTimeElapsed = (state) => {
     return state.data.gameProps.timeElapsed;
-}
+};
 
 export const isPaused = (state) => {
     return state.data.gameProps.isPaused;
-}
+};
 
 export const getBoard = (state) => {
     return state.data.gameProps.game.board;
@@ -40,33 +40,35 @@ export const getGameDifficulty = (state) => {
 
 export const isPageSelected = (state, page) => {
     return state.data.pages[page];
-}
+};
 
 export const previousGameExists = (state) => {
     return state.data.gameProps.game.board.length > 0;
-}
+};
 
 export const getRemainingBombs = (state) => {
-    return 0;
-}
+    const numFlagged = state.data.gameProps.game.board.filter((tile) => tile.isFlagged).length;
+    const totalBombs = state.data.gameProps.difficulty.numBombs;
+    return Math.max(0, totalBombs - numFlagged);
+};
 export const getWin = (state) => {
     return state.data.gameProps.game.didWin && state.data.gameProps.game.gameOver;
-}
+};
 export const getLoss = (state) => {
     return !state.data.gameProps.game.didWin && state.data.gameProps.game.gameOver;
-}
+};
 export const gameOver = (state) => {
     return state.data.gameProps.game.gameOver;
-}
+};
 
 export const changed = (state, ownProps) => {
     return state.data.gameProps.game.board[ownProps.index].status;
-}
+};
 
 export const getTile = (state, ownProps) => {
     return state.data.gameProps.game.board[ownProps.index];
-}
+};
 
 export const getTutorialGameIndex = (state) => {
     return state.data.tutorialPage.gameIndex;
-}
+};

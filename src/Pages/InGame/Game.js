@@ -48,37 +48,13 @@ const Game = ({
     }
 
     const initialTileClick = (tile) => {
-        const newGame = new MinesweeperGame(gameDifficulty, tile.index);
+        const newGame = new MinesweeperGame(null, {
+            gameDifficulty: gameDifficulty,
+            initialClickIndex: tile.index
+        });
         performInitialSetup(newGame);
         firstClick();
     };
-
-    const bombClick = () => {
-        game.lose();
-    };
-
-    const unopenedTileClick = (tile) => {
-        game.clickTile(tile);
-        updateBoard();
-    };
-
-    const flagClick = (tile) => {
-        game.flagTile(tile.index);
-        updateBoard();
-    };
-
-    const openNeighbors = (tile) => {
-        game.openNeighbors(tile);
-        updateBoard();
-    };
-
-    function isClicked(tile) {
-        if (tile && tile.isOpened) {
-            return true;
-        }
-
-        return false;
-    }
 
     return <GameWrapper isPaused={isPaused} gameDifficulty={gameDifficulty}>
         {
@@ -87,38 +63,19 @@ const Game = ({
                     key={tile.index}
                     index={tile.index}
                     gameMode={gameMode}
-                    click={
-                        (tile) => {
-                            if (gameOver) {
-                                return;
-                            }
-
-                            if (!isSet) {
-                                initialTileClick(tile);
-                                return;
-                            }
-
-                            if (isClicked(tile)) {
-                                openNeighbors(tile);
-                                return;
-                            }
-
-                            if (gameMode === 'flagging') {
-                                flagClick(tile);
-                                return;
-                            }
-
-                            if (tile.isFlagged) {
-                                return;
-                            }
-                            if (tile.type === 'bomb') {
-                                bombClick(tile);
-                                return;
-                            }
-
-                            unopenedTileClick(tile);
+                    click={() => {
+                        if (gameOver) {
+                            return;
                         }
-                    }
+
+                        if (!isSet) {
+                            initialTileClick(tile);
+                            return;
+                        }
+
+                        tile.click(game, gameMode);
+                        updateBoard();
+                    }}
                 />;
             })
         }

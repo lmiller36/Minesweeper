@@ -47,7 +47,7 @@ export const data = (state = initialState, action) => {
                 ...state,
                 gameProps: {
                     ...state.gameProps,
-                    gameMode: 'clicking',
+                    gameMode: { clicking: true, flagging: false },
                     isPaused: false,
                 },
             };
@@ -64,7 +64,7 @@ export const data = (state = initialState, action) => {
                     isSet: true,
                     update: 0,
                     shouldRerender: 0,
-                    gameMode: 'clicking',
+                    gameMode: { clicking: true, flagging: false },
                     isPaused: false,
                 },
             };
@@ -118,7 +118,10 @@ export const data = (state = initialState, action) => {
         }
 
         case TOGGLE_GAME_MODE: {
-            const newMode = state.gameProps.gameMode === 'clicking' ? 'flagging' : 'clicking';
+            const newMode = {
+                clicking: !state.gameProps.gameMode.clicking,
+                flagging: !state.gameProps.gameMode.flagging
+            };
 
             return {
                 ...state,
@@ -132,10 +135,14 @@ export const data = (state = initialState, action) => {
         case START_GAME: {
             const { difficulty } = payload;
 
-            const game = new MinesweeperGame({
-                ...difficulty,
-                numBombs: 0,
-            }, null);
+            const game = new MinesweeperGame(null, {
+                gameDifficulty: {
+                    ...difficulty,
+                    numBombs: 0,
+                },
+            });
+
+            console.log(game);
 
             return {
                 ...state,
@@ -146,7 +153,7 @@ export const data = (state = initialState, action) => {
                     isPaused: false,
                     timeElapsed: 0,
                     shouldRerender: 0,
-                    gameMode: 'clicking',
+                    gameMode: { clicking: true, flagging: false }
                 }
             };
         }
@@ -187,7 +194,7 @@ export const data = (state = initialState, action) => {
 
         case CONTINUE_GAME: {
 
-            const game = new MinesweeperGame(state.gameProps.difficulty, null, null, state.gameProps.game);
+            const game = new MinesweeperGame(state.gameProps.game);
             return {
                 ...state,
                 gameProps: {
