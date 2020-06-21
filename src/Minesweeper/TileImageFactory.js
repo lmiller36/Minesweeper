@@ -38,11 +38,31 @@ function TileImageFactory() {
     };
 }
 
+function GameOverTileImageFactory() {
+    this.createImage = function (tile) {
+        let image;
+
+        if (!tile.isOpened && !tile.isFlagged && tile.isBomb) {
+            image = new BombImage();
+        } else if (tile.isOpened) {
+            image = new OpenedImage(tile.numBombs);
+        } else if (tile.isFlagged) {
+            image = new FlaggedImage();
+        } else {
+            image = new UnopenedImage();
+        }
+
+        return image.url;
+    };
+}
+
 const timeImageFactory = new TileImageFactory();
+const gameOverImageFactory = new GameOverTileImageFactory();
+
 
 const TileImage = styled.div`
 content: url(${(props) => {
-        return timeImageFactory.createImage(props.tile);
+        return props.gameOver ? gameOverImageFactory.createImage(props.tile) : timeImageFactory.createImage(props.tile);
     }});
     width: 50px;
     height: 50px;

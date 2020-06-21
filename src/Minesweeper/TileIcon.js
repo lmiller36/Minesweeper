@@ -18,16 +18,16 @@ const TileWrapper = styled.div`
     height: 50px;
 `;
 
-const Tile = ({ tile, gameMode, click }) => {
+const Tile = ({ tile, gameMode, click, gameOver }) => {
 
     return <TileWrapper
         onClick={() => {
             click(tile);
         }}>
 
-        <TileImage style={{ position: 'absolute' }} tile={tile} />
+        <TileImage style={{ position: 'absolute' }} tile={tile} gameOver={gameOver} />
         <FontAwesomeIcon size='2x' style={{
-            display: `${gameMode.flagging && !tile.isOpened && !tile.isFlagged ? '' : 'none'}`,
+            display: `${!gameOver && gameMode.flagging && !tile.isOpened && !tile.isFlagged ? '' : 'none'}`,
             zIndex: '20',
             position: 'absolute',
             left: '10',
@@ -35,12 +35,11 @@ const Tile = ({ tile, gameMode, click }) => {
             opacity: '.3'
         }} icon={faFlag} />
         <FontAwesomeIcon size='2x' style={{
-            // display: `${gameMode.flagging && !tile.isOpened && !tile.isFlagged ? '' : 'none'}`,
+            display: `${gameOver && tile.isFlagged && !tile.isBomb ? '' : 'none'}`,
             zIndex: '20',
             position: 'absolute',
-            left: '10',
+            left: '12',
             top: '10',
-            opacity: '.3'
         }} icon={faTimes} />
     </TileWrapper>;
 };

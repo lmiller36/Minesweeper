@@ -63,6 +63,7 @@ const Game = ({
                     key={tile.index}
                     index={tile.index}
                     gameMode={gameMode}
+                    gameOver={gameOver}
                     click={() => {
                         if (gameOver) {
                             return;
