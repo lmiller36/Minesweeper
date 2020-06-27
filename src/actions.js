@@ -33,7 +33,7 @@ export const togglePauseGame = () => ({
 export const END_GAME = 'END_GAME';
 export const endGame = (didWin) => ({
     type: END_GAME,
-    payload: {didWin},
+    payload: { didWin },
 });
 
 
@@ -58,7 +58,7 @@ export const startGame = (difficulty) => ({
 export const CONTINUE_GAME = 'CONTINUE_GAME';
 export const continueGame = () => ({
     type: CONTINUE_GAME,
-    payload: {  },
+    payload: {},
 });
 
 export const SWITCH_PAGES = 'SWITCH_PAGES';
@@ -73,4 +73,14 @@ export const setTutorialGameIndex = (index) => ({
     payload: { index },
 });
 
+export const SIGN_IN = 'SIGN_IN';
+export const signIn = (profile) => ({
+    type: SIGN_IN,
+    payload: { profile },
+});
 
+export const SIGN_OUT = 'SIGN_OUT';
+export const signOut = () => ({
+    type: SIGN_OUT,
+    payload: {},
+});

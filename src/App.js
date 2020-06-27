@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { pageLoadedSetup } from './actions'
+import { pageLoadedSetup } from './actions';
 import './App.css';
 import styled from 'styled-components';
 import Logo from './Logo';
@@ -14,6 +14,7 @@ const Pages = styled.div`
 `;
 
 const App = ({ pageLoadedSetup }) => {
+
     return <div className="App-Wrapper unselectable" onLoad={pageLoadedSetup}>
         <div className="App">
             <Logo />
@@ -26,8 +27,8 @@ const App = ({ pageLoadedSetup }) => {
 
 
         </div>
-    </div>
-}
+    </div >;
+};
 
 const mapDispatchToProps = (dispatch) => ({
     pageLoadedSetup: () => dispatch(pageLoadedSetup()),

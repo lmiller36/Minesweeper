@@ -72,3 +72,17 @@ export const getTile = (state, ownProps) => {
 export const getTutorialGameIndex = (state) => {
     return state.data.tutorialPage.gameIndex;
 };
+
+export const isLoggedIn = (state) => {
+    return !!state.data.serverProps.profile;
+};
+
+export const getUserProfile = (state) => {
+    return state.data.serverProps.profile;
+};
+
+export const getAvatar = (state) => {
+    const profile = getUserProfile(state);
+    return profile ? profile.avatar : '';
+};
+

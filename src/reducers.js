@@ -12,7 +12,9 @@ import {
     TOGGLE_PAUSE_GAME,
     END_GAME,
     SET_TUTORIAL_GAME_INDEX,
-    CONTINUE_GAME
+    CONTINUE_GAME,
+    SIGN_IN,
+    SIGN_OUT
 } from './actions';
 import { EASY, MAIN_MENU, ALL_PAGES, HOW_TO_PLAY } from './Constants';
 import MinesweeperGame from './Minesweeper/Minesweeper';
@@ -26,11 +28,15 @@ const initialState = {
         },
         timeElapsed: 0,
         isSet: false,
+        gameMode: { clicking: true, flagging: false },
     },
     tutorialPage: {
         gameIndex: 0,
     },
-    pages: {}
+    pages: {},
+    serverProps: {
+        profile: null
+    },
 };
 
 export const data = (state = initialState, action) => {
@@ -200,6 +206,28 @@ export const data = (state = initialState, action) => {
                 gameProps: {
                     ...state.gameProps,
                     game: game,
+                }
+            };
+        }
+
+        case SIGN_IN: {
+            const { profile } = payload;
+            console.log(profile);
+            return {
+                ...state,
+                serverProps: {
+                    ...state.serverProps,
+                    profile: profile,
+                }
+            };
+        }
+
+        case SIGN_OUT: {
+            return {
+                ...state,
+                serverProps: {
+                    ...state.serverProps,
+                    profile: null,
                 }
             };
         }
